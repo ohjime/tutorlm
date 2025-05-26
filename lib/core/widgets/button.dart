@@ -29,8 +29,9 @@ class AppButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     required this.variant,
+    required this.delay,
   });
-
+  final double delay;
   final double? height;
   final double? borderRadius;
   final double? borderWidth;
@@ -107,41 +108,39 @@ class AppButton extends StatelessWidget {
       borderRadius: borderRadius ?? 14,
       borderWidth: borderWidth ?? 2.5,
       buttonHeight: buttonHeight ?? 4,
-      buttonType:
-          isIconButton
-              ? ChicletButtonTypes.circle
-              : ChicletButtonTypes.roundedRectangle,
+      buttonType: isIconButton
+          ? ChicletButtonTypes.circle
+          : ChicletButtonTypes.roundedRectangle,
       splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
-      disabledForegroundColor:
-          Theme.of(context).colorScheme.surfaceContainerHighest,
+      disabledForegroundColor: Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest,
       disabledBackgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-      disabledBorderColor:
-          Theme.of(context).colorScheme.surfaceContainerHighest,
+      disabledBorderColor: Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest,
       foregroundColor: foregroundColor,
       backgroundColor: backgroundColor,
       borderColor: borderColor,
       buttonColor: buttonColor,
-      onPressed:
-          isDisabled
-              ? null
-              : isLoading
-              ? null
-              : () async {
-                HapticFeedback.heavyImpact();
-                await Future.delayed(const Duration(milliseconds: 240));
-                onPressed();
-              },
+      onPressed: isDisabled
+          ? null
+          : isLoading
+          ? null
+          : () async {
+              HapticFeedback.heavyImpact();
+              await Future.delayed(Duration(milliseconds: delay.toInt()));
+              onPressed();
+            },
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 200),
         reverseDuration: Duration(milliseconds: 60),
         switchOutCurve: Curves.easeInOut,
-        transitionBuilder:
-            (child, animation) =>
-                FadeTransition(opacity: animation, child: child),
-        child:
-            isLoading
-                ? isIconButton
-                    ? LoadingIndicator(
+        transitionBuilder: (child, animation) =>
+            FadeTransition(opacity: animation, child: child),
+        child: isLoading
+            ? isIconButton
+                  ? LoadingIndicator(
                       indicatorType: Indicator.ballSpinFadeLoader,
                       colors: [
                         Theme.of(context).colorScheme.onPrimaryContainer,
@@ -149,7 +148,7 @@ class AppButton extends StatelessWidget {
                         Theme.of(context).colorScheme.onTertiaryContainer,
                       ],
                     )
-                    : LoadingIndicator(
+                  : LoadingIndicator(
                       indicatorType: Indicator.ballPulse,
                       colors: [
                         Theme.of(context).colorScheme.onPrimaryContainer,
@@ -157,24 +156,23 @@ class AppButton extends StatelessWidget {
                         Theme.of(context).colorScheme.onTertiaryContainer,
                       ],
                     )
-                : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    if (leadingIcon != null) Icon(leadingIcon),
-                    if (!isIconButton)
-                      Text(
-                        text,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.5,
-                        ),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 10,
+                children: [
+                  if (leadingIcon != null) Icon(leadingIcon),
+                  if (!isIconButton)
+                    Text(
+                      text,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.5,
                       ),
-                    if (trailingIcon != null && !isIconButton)
-                      Icon(trailingIcon),
-                  ],
-                ),
+                    ),
+                  if (trailingIcon != null && !isIconButton) Icon(trailingIcon),
+                ],
+              ),
       ),
     );
   }
@@ -185,6 +183,7 @@ class AppButton extends StatelessWidget {
     double? borderRadius,
     double? borderWidth,
     double? buttonHeight,
+    double? delay,
     bool isIconButton = false,
     bool isDisabled = false,
     bool isLoading = false,
@@ -207,6 +206,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.primary,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -223,6 +223,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -238,6 +239,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.secondary,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -254,6 +256,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -269,6 +272,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.tertiary,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -285,6 +289,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -300,6 +305,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.black,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -316,6 +322,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -331,6 +338,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.white,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -347,6 +355,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -362,6 +371,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.success,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -378,6 +388,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -393,6 +404,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.warning,
+      delay: delay ?? 250.0,
     );
   }
 
@@ -409,6 +421,7 @@ class AppButton extends StatelessWidget {
     IconData? trailingIcon,
     required String text,
     required VoidCallback onPressed,
+    double? delay,
   }) {
     return AppButton(
       key: key,
@@ -424,6 +437,7 @@ class AppButton extends StatelessWidget {
       text: text,
       onPressed: onPressed,
       variant: AppButtonVariant.danger,
+      delay: delay ?? 250.0,
     );
   }
 }
