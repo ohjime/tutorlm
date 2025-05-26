@@ -1,0 +1,144 @@
+// @ts-check
+// Note: type annotations allow type checking and IDEs autocompletion
+
+const lightCodeTheme = require('prism-react-renderer').themes.vsLight;
+const darkCodeTheme = require('prism-react-renderer').themes.vsDark;
+
+/** @type {import('@docusaurus/types').Config} */
+const config = {
+  title: 'TutorLM',
+  tagline: 'TutorLM Developer Guide',
+  url: 'https://ohjime.github.io',
+  baseUrl: '/tutorlm/',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
+  favicon: 'img/favicon.ico',
+
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: 'ohjime', // Usually your GitHub org/user name.
+  projectName: 'tutorlm', // Usually your repo name.
+  // Even if you don't use internalization, you can use this field to set useful
+  // metadata like html lang. For example, if your site is Chinese, you may want
+  // to replace "en" with "zh-Hans".
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+  
+  presets: [
+    [
+      'classic',
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
+        docs: {
+          sidebarPath: require.resolve('./sidebars.js'),
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl:
+            'https://github.com/ohjime/tutorlm/tree/main/docs/',
+          breadcrumbs: true,
+          admonitions: true,
+          showLastUpdateTime: true,
+        },
+        theme: {
+          customCss: require.resolve('./src/css/custom.css'),
+          
+        },
+      }),
+    ],
+  ],
+
+  themes: ['@docusaurus/theme-mermaid'],
+
+  markdown: {
+    mermaid: true,
+    format: 'detect',
+    
+  },
+
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      docs: {
+        sidebar: {
+          autoCollapseCategories: true,
+        },
+      },
+      navbar: {
+        title: 'TutorLM Docs',
+        logo: {
+          alt: 'Logo',
+          src: 'img/logo.png',
+        },
+        items: [
+          {
+            type: 'doc',
+            docId: 'guide/introduction',
+            position: 'left',
+            label: 'Getting Started',
+            
+          },
+          {
+            type: 'doc',
+            docId: 'design/overview',
+            position: 'right',
+            label: 'Design',
+          },
+          {
+            type: 'doc',
+            docId: 'development/overview',
+            position: 'right',
+            label: 'Development',
+          },
+          {
+            label: 'Backlog',
+            href: 'https://tree.taiga.io/project/ohjime-tutorly/backlog',
+            position: 'right',
+          },
+          {
+            href: 'https://github.com/ohjime/tutorlm/',
+            position: 'right',
+            className: 'navbar-github-icon',
+            'aria-label': 'GitHub repository',
+          },
+        ],
+      },
+      footer: {
+        links: [
+          
+          {
+            title: 'Resources',
+            items: [
+              {
+                label: 'Blog',
+                href: '#',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/ohjime/tutorlm/tree/main/',
+              },
+            ],
+          },
+        ],
+      },
+      prism: {
+        additionalLanguages: ['bash', 'dart', 'yaml'],
+        theme: lightCodeTheme,
+        darkTheme: darkCodeTheme,
+      },
+      mermaid: {
+        theme: {
+          light: 'neutral',
+          dark: 'forest',
+        },
+      },
+    }),
+};
+
+module.exports = config;

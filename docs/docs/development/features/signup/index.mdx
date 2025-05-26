@@ -1,0 +1,98 @@
+---
+id: features-signup
+sidebar_label: Signup Feature
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# Signup Overview
+
+The signup feature guides new users through a dynamic onboarding flow that adapts to their chosen profile and collects all necessary information in a single process. Users can upload files, set their availability, and configure their preferences without downloading multiple apps or hunting for additional settings. This streamlined experience reduces confusion and simplifies account setup.
+
+## Dependencies
+
+The core signup logic is managed by its state machine, which has one direct external dependency:
+
+- [`flutter_bloc`](https://pub.dev/packages/flutter_bloc): Provides the BLoC pattern for state management, decoupling business logic from UI and facilitating testing.
+
+The signup UI is built in Flutter and relies on the following packages:
+
+- [`flutter_form_builder`](https://pub.dev/packages/flutter_form_builder): Comprehensive form widgets and utilities.
+- [`form_builder_validators`](https://pub.dev/packages/form_builder_validators): Validation functions for form inputs.
+- [`image_picker`](https://pub.dev/packages/image_picker): Enables file and image uploads during onboarding.
+- [`awesome_dialog`](https://pub.dev/packages/awesome_dialog): Displays modal dialogs for file upload feedback and error handling.
+
+Further details on the Signup State Machine and its Views are available in the sub-sections below:
+<DocCardList layout="twoColumn" />
+
+## Feature Overview
+
+Below is a breakdown of each implemented functionality, cross-referenced with the user stories:
+
+### Dynamic Onboarding Flow
+
+***User Story #54***: *"As a user I want to have a dynamic onboarding flow for multiple user types so that I do not have to download different apps for different profiles."*
+
+The signup wizard adjusts the sequence of steps based on the selected user type (e.g., tutor, student), presenting only relevant fields and options:
+
+<figure style={{textAlign: 'center'}}>
+    |![](../../../../static/gif/signup_wizard.gif)|
+    |:-:|
+    | **Figure 1**: Dynamic signup wizard adapting to user type |
+</figure>
+
+### File Upload During Onboarding
+
+***User Story #55***: *"As a user I want to be able to upload files directly in the onboarding step, so that I do not have to search where to add them later."*
+
+Users can upload profile pictures, qualification documents, and other assets inline:
+
+<figure style={{textAlign: 'center'}}>
+    |![](../../../../static/gif/signup_edit_form_entries.gif)|![](../../../../static/gif/signup_placeholder_image_picker.gif)|
+    |:-:|:-:|
+    | **Figure 2a**: Editing form entries with file inputs | **Figure 2b**: Placeholder image before upload |
+</figure>
+
+### Guided Onboarding Experience
+
+***User Story #56***: *"As a user I want a guided onboarding experience so that I am not confused."*
+
+Contextual hints and progress indicators help users complete each step without uncertainty:
+
+<figure style={{textAlign: 'center'}}>
+    |![](../../../../static/gif/signup_dynamic_step_progression.gif)|
+    |:-:|
+    | **Figure 3**: Step progress indicator guiding users |
+</figure>
+
+### Single Signup Process
+
+***User Story #57***: *"As a user I would like to have a single onboarding process, so that I can signup and configure all my information in one place without having to find out where else to put that information."*
+
+All configuration—personal details, subjects, and schedules—happens in one flow:
+
+<figure style={{textAlign: 'center'}}>
+    |![](../../../../static/gif/signup_email_pass_form.gif)|![](../../../../static/gif/signup_saved_form_entries.gif)|
+    |:-:|:-:|
+    | **Figure 4a**: Email and password form fields | **Figure 4b**: Saved form entries review |
+</figure>
+
+### Easy-to-Use Schedule Form
+
+***User Story #18***: *"As a user I would like to have an easy to use schedule form so that I don't spend too much time inputting my availability."*
+
+A calendar-style selector allows quick availability selection:
+
+<figure style={{textAlign: 'center'}}>
+    |![](../../../../static/gif/signup_schedule_select_form.gif)|![](../../../../static/gif/signup_subject_select.gif)|
+    |:-:|:-:|
+    | **Figure 5a**: Schedule selector interface | **Figure 5b**: Subject selection dropdown |
+</figure>
+
+Additional signup screens include typeahead search for topics and review screens:
+
+<figure style={{textAlign: 'center'}}>
+    |![](../../../../static/gif/signup_typeahead_and_flexible_sheet.gif)|![](../../../../static/gif/signup_saved_form_entries.gif)|
+    |:-:|:-:|
+    | **Figure 6a**: Typeahead subject search | **Figure 6b**: Final review before submission |
+</figure>
