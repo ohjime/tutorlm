@@ -23,16 +23,13 @@
     ],
     "latex-workshop.view.pdf.invertMode.enabled": "auto",
     "latex-workshop.view.pdf.invert": 0.9,
-    
     "latex-workshop.formatting.latex":"tex-fmt",
     "latex-workshop.message.error.show": false,
     "latex-workshop.message.log.show": false,
     "latex-workshop.message.warning.show": false,
     "latex-workshop.message.information.show": false,
     "files.exclude": {
-        "**/.[!v]*": true,
         "**/.vscode-remote-containers": true,
-        // "**/.vscode": true,
         "**/.vscode-server/bin": true,
         "**/.vscode-server/data/CachedProfilesData": true,
         "**/.vscode-server/data/CachedExtensionVSIXs": true,
