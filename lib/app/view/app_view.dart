@@ -1,3 +1,4 @@
+import 'package:app/app/view/unknown_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/app/app.dart';
@@ -54,6 +55,13 @@ class _AppViewState extends State<AppView> {
         initialRoute: '/',
         // Providing the onGenerateRoute function
         onGenerateRoute: widget.onGenerateRoute,
+        onUnknownRoute: (settings) {
+          // Handling unknown routes
+          return MaterialPageRoute(
+            builder: (_) => const UnknownPage(),
+            settings: settings,
+          );
+        },
         builder: (context, child) {
           // AppView completely rebuilds anytime the AppBloc emits a new state.
           // Since AppView is at the root of the widget tree, rebuilds here will cause the
