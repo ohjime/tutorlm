@@ -1,3 +1,5 @@
+import 'package:app/home/home.dart';
+import 'package:app/home/widgets/home_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,13 +57,27 @@ class App extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SignupPage());
       case '/home':
         return MaterialPageRoute(
-          builder: (_) => Placeholder(
-            child: ElevatedButton(
-              onPressed: () {
-                _authenticationRepository.logOut();
-              },
-              child: const Text('Sign Out'),
-            ),
+          builder: (_) => HomePage(
+            tabs: [
+              HomeTab(
+                tabBody: Container(
+                  color: Colors.blue,
+                  key: ValueKey('Sessions'),
+                ), // Replace with actual tab body widget
+                tabTitle: 'Sessidsfsdns',
+                tabSubtitle: 'List',
+                tabIcon: Icon(Icons.list),
+              ),
+              HomeTab(
+                tabBody: Container(
+                  color: Colors.red,
+                  key: ValueKey('Messages'),
+                ), // Replace with actual tab body widget
+                tabTitle: 'Messages',
+                tabSubtitle: 'List',
+                tabIcon: Icon(Icons.message),
+              ),
+            ],
           ),
         );
       default:
