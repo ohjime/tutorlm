@@ -47,9 +47,9 @@ typedef StepCallback =
 List<SignupStep> signupSteps = [
   // Create initial step that plays the cooked rive animation
   SignupStep(
-    title: 'Welcome to app!',
+    title: 'Welcome to TutorLM!',
     dialogue: [
-      'Welcome to app, the app that connects students with tutors!',
+      'Welcome to TutorLM, the app that connects students with tutors!',
       'We are excited to have you here!',
       'Let\'s get started with your signup process!',
     ],
