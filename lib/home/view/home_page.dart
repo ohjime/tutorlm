@@ -1,9 +1,8 @@
-import 'package:app/home/widgets/home_drawer.dart';
 import 'package:chiclet/chiclet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:app/home/home.dart';
-import 'package:app/home/widgets/home_tab.dart';
+import 'package:app/core/core.dart';
 
 class HomePage extends StatefulWidget {
   final List<HomeTab> tabs;
@@ -24,17 +23,25 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ZoomDrawer(
-      mainScreenScale: 0.15,
+      mainScreenScale: 0.1,
       controller: _drawerController,
       menuScreen: const HomeDrawer(),
       mainScreen: _buildMainScreen(context),
       showShadow: true,
+      boxShadow: [
+        BoxShadow(
+          color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
+          blurRadius: 20,
+          offset: const Offset(0, 2),
+        ),
+      ],
       borderRadius: 30,
       angle: 0,
-      drawerShadowsBackgroundColor: Theme.of(context).colorScheme.onSecondary,
-      slideWidth: MediaQuery.of(context).size.width * 0.8,
-      menuBackgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      drawerShadowsBackgroundColor: Theme.of(context).colorScheme.primary,
+      slideWidth: MediaQuery.of(context).size.width * 0.7,
+      menuBackgroundColor: Theme.of(context).colorScheme.surfaceBright,
       mainScreenTapClose: true,
+      menuScreenWidth: 220,
     );
   }
 
@@ -48,12 +55,12 @@ class HomePageState extends State<HomePage> {
       extendBody: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
-        child: HomeAppBar(
+        child: PrimaryAppBar(
           onPressed: () {
             _drawerController.toggle?.call();
           },
           tabTitle: currentTab.tabTitle,
-          tabSubtitle: currentTab.tabSubtitle,
+          tabAction: currentTab.tabAction(context),
           color: tabColors[_selectedTabIndex],
         ),
       ),

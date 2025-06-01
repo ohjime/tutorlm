@@ -1,28 +1,16 @@
 // A simple menu screen widget
-import 'package:app/app/app.dart';
 import 'package:app/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:random_avatar/random_avatar.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Get user from AppBloc
-    final credential = context.select<AppBloc, AuthCredential>((bloc) {
-      final state = bloc.state;
-      if (state is Authenticated) {
-        return state.credential;
-      } else {
-        return AuthCredential.empty;
-      }
-    });
-    final user = context.read<UserRepository>().getUser(credential.id);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      backgroundColor: Theme.of(context).colorScheme.surfaceBright,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 16, bottom: 26, top: 16),
@@ -61,76 +49,79 @@ class HomeDrawer extends StatelessWidget {
                 thickness: 3,
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
               ),
-              FutureBuilder(
-                future: user,
-                initialData: User.empty,
-                builder: (context, asyncSnapshot) {
-                  return Card(
-                    margin: const EdgeInsets.only(left: 8),
-                    color: Theme.of(context).colorScheme.surfaceBright,
-                    child: ListTile(
-                      leading:
-                          asyncSnapshot.data?.imageUrl != null &&
-                              asyncSnapshot.data!.imageUrl!.isNotEmpty
-                          ? CircleAvatar(
-                              radius: 28,
-                              backgroundImage: NetworkImage(
-                                asyncSnapshot.data!.imageUrl!,
-                              ),
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainerHighest,
-                            )
-                          : CircleAvatar(
-                              radius: 28,
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainerHighest,
-                              child: RandomAvatar(
-                                asyncSnapshot.data?.name ?? 'guest',
-                                height: 50,
-                              ),
-                            ),
-                      title: Text(
-                        asyncSnapshot.data?.name ?? 'Guest',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      subtitle: Text(
-                        asyncSnapshot.data?.role == null ||
-                                asyncSnapshot.data!.role == UserRole.unknown
-                            ? 'Unknown'
-                            : asyncSnapshot.data!.role == UserRole.tutor
-                            ? 'Tutor'
-                            : asyncSnapshot.data!.role == UserRole.student
-                            ? 'Student'
-                            : asyncSnapshot.data!.role.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 14.0),
-                child: AppButton.secondary(
-                  text: 'Sign Out',
-                  onPressed: () {
-                    context.read<AppBloc>().add(LogoutPressed());
-                  },
-                  height: 46,
-                  leadingIcon: Icons.logout,
+              Text(
+                'No New Notifications',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
               ),
               Expanded(
                 child: ListView(
                   reverse: true,
                   children: <Widget>[
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      leading: Icon(
+                        Icons.logout_rounded,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      title: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      onTap: () {
+                        ZoomDrawer.of(context)?.close();
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: SizedBox(
+                              child: IntrinsicHeight(
+                                child: Center(
+                                  child: Column(
+                                    spacing: 20,
+                                    children: [
+                                      Text(
+                                        'Are you sure you want to sign out?',
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(
+                                                context,
+                                              ).pop(); // Close the dialog
+                                            },
+                                            child: Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<
+                                                    AuthenticationRepository
+                                                  >()
+                                                  .logOut();
+                                            },
+                                            child: Text('Sign Out'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     ListTile(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -177,6 +168,54 @@ class HomeDrawer extends StatelessWidget {
                         Navigator.of(
                           context,
                         ).pushNamed('admin'); // Navigate to Admin Page
+                      },
+                    ),
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      leading: Icon(
+                        Icons.settings,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      title: Text(
+                        'Settings',
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      onTap: () async {
+                        ZoomDrawer.of(context)?.close();
+                        await Future.delayed(const Duration(milliseconds: 300));
+                        Navigator.of(
+                          context,
+                        ).pushNamed('/settings'); // Navigate to Settings Page
+                      },
+                    ),
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      leading: Icon(
+                        Icons.bug_report,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                      title: Text(
+                        'Notification Debug',
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      onTap: () async {
+                        ZoomDrawer.of(context)?.close();
+                        await Future.delayed(const Duration(milliseconds: 300));
+                        Navigator.of(context).pushNamed(
+                          '/notification_debug',
+                        ); // Navigate to Notification Debug
                       },
                     ),
                   ],
