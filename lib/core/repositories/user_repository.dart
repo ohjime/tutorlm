@@ -11,7 +11,7 @@ class UserRepository {
   /// Creates a new user document using the provided UID.
   Future<void> createUser(String uid, User user) async {
     try {
-      await _db.collection('users').doc(uid).set(user.toMap());
+      await _db.collection('users').doc(uid).set(user.toJson());
     } catch (e) {
       throw Exception('Failed to create user: ${e.toString()}');
     }
@@ -30,20 +30,10 @@ class UserRepository {
     }
   }
 
-  /// Checks if a user document exists by UID.
-  Future<bool> checkUserExists({required String uid}) async {
-    try {
-      final doc = await _db.collection('users').doc(uid).get();
-      return doc.exists;
-    } catch (e) {
-      throw Exception('Failed to check user existence: ${e.toString()}');
-    }
-  }
-
   /// Updates a user document by converting the provided [User] to a map.
   Future<void> updateUser(String uid, User user) async {
     try {
-      await _db.collection('users').doc(uid).update(user.toMap());
+      await _db.collection('users').doc(uid).update(user.toJson());
     } catch (e) {
       throw Exception('Failed to update user: ${e.toString()}');
     }
@@ -75,6 +65,16 @@ class UserRepository {
       await _db.collection('users').doc(uid).delete();
     } catch (e) {
       throw Exception('Failed to delete user: ${e.toString()}');
+    }
+  }
+
+  /// Retrieves all users from the 'users' collection.
+  Future<List<User>> getUsers() async {
+    try {
+      final snapshot = await _db.collection('users').get();
+      return snapshot.docs.map((doc) => User.fromJson(doc.data())).toList();
+    } catch (e) {
+      throw Exception('Failed to get users: \\${e.toString()}');
     }
   }
 }

@@ -63,24 +63,21 @@ class _SingleLineTextFieldState extends State<SingleLineTextField>
     return FormBuilderField<String>(
       name: widget.name,
       initialValue: widget.initialValue,
-      validator:
-          widget.validators != null
-              ? FormBuilderValidators.compose(widget.validators!)
-              : null,
+      validator: widget.validators != null
+          ? FormBuilderValidators.compose(widget.validators!)
+          : null,
       builder: (field) {
         final hasError = field.errorText != null;
 
         final isFocused = _focusNode.hasFocus;
 
-        final borderColor =
-            hasError
-                ? Colors.red
-                : Theme.of(context).colorScheme.surfaceContainerHigh;
+        final borderColor = hasError
+            ? Colors.red
+            : Theme.of(context).colorScheme.surfaceContainerHigh;
 
-        final fieldFill1 =
-            hasError
-                ? Colors.red.withValues(alpha: 0.04)
-                : Theme.of(context).colorScheme.surfaceContainerLow;
+        final fieldFill1 = hasError
+            ? Colors.red.withValues(alpha: 0.04)
+            : Theme.of(context).colorScheme.surfaceContainerLow;
 
         final fieldWidget = AnimatedSize(
           duration: const Duration(milliseconds: 200),
@@ -111,19 +108,15 @@ class _SingleLineTextFieldState extends State<SingleLineTextField>
                             focusNode: _focusNode,
                             onChanged: field.didChange,
                             enabled: widget.enabled,
-                            style:
-                                widget.isItalics
-                                    ? const TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                    )
-                                    : null,
+                            style: widget.isItalics
+                                ? const TextStyle(fontStyle: FontStyle.italic)
+                                : null,
                             inputFormatters: widget.formatters,
                             decoration: InputDecoration(
-                              prefixIcon:
-                                  widget.leadingIcon != null
-                                      ? Icon(widget.leadingIcon)
-                                      : null,
-                              hintText: widget.hintText ?? 'Full Name',
+                              prefixIcon: widget.leadingIcon != null
+                                  ? Icon(widget.leadingIcon)
+                                  : null,
+                              hintText: widget.hintText ?? '',
                               hintStyle: TextStyle(
                                 color: Theme.of(
                                   context,
@@ -174,20 +167,19 @@ class _SingleLineTextFieldState extends State<SingleLineTextField>
               ),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
-                child:
-                    hasError
-                        ? Padding(
-                          key: ValueKey('error_${field.errorText}'),
-                          padding: const EdgeInsets.only(top: 4.0, left: 12.0),
-                          child: Text(
-                            field.errorText!,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                            ),
+                child: hasError
+                    ? Padding(
+                        key: ValueKey('error_${field.errorText}'),
+                        padding: const EdgeInsets.only(top: 4.0, left: 12.0),
+                        child: Text(
+                          field.errorText!,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
                           ),
-                        )
-                        : const SizedBox.shrink(),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ],
           ),

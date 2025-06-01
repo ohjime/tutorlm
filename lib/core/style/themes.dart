@@ -20,6 +20,6 @@ final ThemeData lightTheme = getCoreTheme(
 ).copyWith();
 // Use the function to create the dark theme
 final ThemeData darkTheme = getCoreTheme(
-  seedColor: Colors.amber,
+  seedColor: Colors.green,
   brightness: Brightness.dark,
 );

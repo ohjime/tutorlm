@@ -9,3 +9,7 @@ export 'timeslot.dart';
 export 'student.dart';
 export 'tutor.dart';
 export 'course.dart';
+export 'session.dart';
+export 'session_list_filter.dart';
+export 'message.dart';
+export 'chat_room.dart';

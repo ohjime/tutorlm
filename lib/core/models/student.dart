@@ -51,6 +51,33 @@ class Student extends Equatable {
     );
   }
 
+  /// Creates a [Student] instance from a JSON‑compatible map.
+  /// Nested objects delegate to their own `fromJson` implementations.
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
+      uid: json['uid'] as String? ?? '',
+      bio: json['bio'] as String? ?? '',
+      headline: json['headline'] as String? ?? '',
+      status: StudentStatus.values.firstWhere(
+        (e) => e.name == json['status'],
+        orElse: () => StudentStatus.inactive,
+      ),
+      courses:
+          (json['courses'] as List<dynamic>?)
+              ?.map(
+                (courseJson) =>
+                    Course.fromJson(courseJson as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      gradeLevel: Grade.values.firstWhere(
+        (e) => e.name == json['gradeLevel'],
+        orElse: () => Grade.unknown,
+      ),
+      educationInstitute: json['educationInstitute'] as String? ?? '',
+    );
+  }
+
   /// Serializes this [Student] instance into a JSON‑compatible map.
   /// Nested objects delegate to their own `toJson` implementations.
   Map<String, dynamic> toJson() {
