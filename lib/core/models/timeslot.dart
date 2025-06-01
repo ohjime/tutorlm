@@ -29,6 +29,8 @@ class TimeSlot extends Equatable {
 
   /// Re‑hydrate from the map produced by [toJson].
   factory TimeSlot.fromJson(Map<String, dynamic> json) {
+    final id = json['id'] as String?;
+    final name = json['name'] as String?;
     final startRaw = json['start'];
     final endRaw = json['end'];
 
@@ -45,7 +47,7 @@ class TimeSlot extends Equatable {
       throw ArgumentError('`start` must be before `end`.');
     }
 
-    return TimeSlot(start: startDt, end: endDt);
+    return TimeSlot(start: startDt, end: endDt, id: id, name: name);
   }
 
   /// Returns `true` when the two intervals share **any** instant in time.
@@ -53,19 +55,8 @@ class TimeSlot extends Equatable {
       start.isBefore(other.end) && end.isAfter(other.start);
 
   @override
-  List<Object?> get props => [start, end];
+  List<Object?> get props => [id, name, start, end];
 
   @override
   bool get stringify => true;
-}
-
-/// A convenience Block that blocks an **entire day**.
-class VacationBlock extends TimeSlot {
-  VacationBlock(DateTime day)
-    : super(
-        id: 'VACATION',
-        name: 'Vacation',
-        start: DateTime(day.year, day.month, day.day, 0),
-        end: DateTime(day.year, day.month, day.day, 23, 59, 59, 999),
-      );
 }

@@ -29,7 +29,7 @@ class User extends Equatable {
   bool get isEmpty => this == User.empty;
   bool get isNotEmpty => this != User.empty;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'email': email,
@@ -42,6 +42,20 @@ class User extends Equatable {
   }
 
   factory User.fromJson(Map<String, dynamic> map) {
+    // Handle possible null or invalid schedule field
+    Schedule? schedule;
+    try {
+      final schedData = map['schedule'];
+      if (schedData == null || (schedData is Map && schedData.isEmpty)) {
+        schedule = null;
+      } else if (schedData is Map<String, dynamic>) {
+        schedule = Schedule.fromJson(schedData);
+      } else {
+        schedule = null;
+      }
+    } catch (_) {
+      schedule = null;
+    }
     return User(
       email: map['email'] ?? '',
       name: map['name'] ?? '',
@@ -52,7 +66,7 @@ class User extends Equatable {
           : map['role'] == 'student'
           ? UserRole.student
           : UserRole.unknown,
-      schedule: Schedule.fromJson(map['schedule'] ?? {}),
+      schedule: schedule,
       isAdmin: map['isAdmin'] ?? false,
     );
   }

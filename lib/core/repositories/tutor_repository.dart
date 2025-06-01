@@ -25,4 +25,41 @@ class TutorRepository {
       );
     }
   }
+
+  /// Retrieve a List of tutors from Firestore.
+  Future<List<core.Tutor>> getTutors() async {
+    try {
+      final snapshot = await _firestore.collection('tutors').get();
+      return snapshot.docs
+          .map((doc) => core.Tutor.fromJson(doc.data()))
+          .toList();
+    } on FirebaseException catch (e) {
+      print('Firebase Firestore Error (getTutors): ${e.code} - ${e.message}');
+      throw Exception('Error retrieving tutors: ${e.message}');
+    } catch (e) {
+      print('Unexpected error retrieving tutors (getTutors): $e');
+      throw Exception(
+        'An unexpected error occurred while retrieving the tutors.',
+      );
+    }
+  }
+
+  /// Retrieves a single tutor by UID from Firestore.
+  Future<core.Tutor?> getTutor(String uid) async {
+    try {
+      final doc = await _firestore.collection('tutors').doc(uid).get();
+      if (doc.exists && doc.data() != null) {
+        return core.Tutor.fromJson(doc.data()!);
+      }
+      return null;
+    } on FirebaseException catch (e) {
+      print('Firebase Firestore Error (getTutor): ${e.code} - ${e.message}');
+      throw Exception('Error retrieving tutor: ${e.message}');
+    } catch (e) {
+      print('Unexpected error retrieving tutor (getTutor): $e');
+      throw Exception(
+        'An unexpected error occurred while retrieving the tutor.',
+      );
+    }
+  }
 }

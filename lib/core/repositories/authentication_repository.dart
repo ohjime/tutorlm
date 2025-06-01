@@ -1,29 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:meta/meta.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:app/core/core.dart' as core;
 
-/// {@template authentication_repository}
-/// Repository which manages user authentication.
-/// {@endtemplate}
 class AuthenticationRepository {
-  /// {@macro authentication_repository}
   AuthenticationRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignin,
-  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+  }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
        _googleSignIn = googleSignin ?? GoogleSignIn.standard();
 
-  final FirebaseAuth _firebaseAuth;
+  final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-
-  /// Whether or not the current environment is web
-  /// Should only be overridden for testing purposes. Otherwise,
-  /// defaults to [kIsWeb]
-  @visibleForTesting
-  bool isWeb = kIsWeb;
 
   Stream<core.AuthCredential> get credential {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
@@ -60,19 +47,12 @@ class AuthenticationRepository {
   Future<void> logInWithGoogle() async {
     try {
       late final firebase_auth.AuthCredential credential;
-      if (isWeb) {
-        final googleProvider = firebase_auth.GoogleAuthProvider();
-        final googleUser = await _firebaseAuth.signInWithPopup(googleProvider);
-        credential = googleUser.credential!;
-      } else {
-        final googleAccount = await _googleSignIn.signIn();
-        final googleUser = await googleAccount!.authentication;
-        credential = firebase_auth.GoogleAuthProvider.credential(
-          accessToken: googleUser.accessToken,
-          idToken: googleUser.idToken,
-        );
-      }
-
+      final googleAccount = await _googleSignIn.signIn();
+      final googleUser = await googleAccount!.authentication;
+      credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleUser.accessToken,
+        idToken: googleUser.idToken,
+      );
       await _firebaseAuth.signInWithCredential(credential);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.fromCode(e.code);

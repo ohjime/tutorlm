@@ -17,6 +17,7 @@ dependencies:
   firebase_storage: ^12.4.6
   google_sign_in: ^6.3.0
   cloud_firestore: ^5.6.8
+  firebase_messaging: ^15.1.6
   path_provider: ^2.1.5
   animations: ^2.0.11
   animated_text_kit: ^4.2.3
@@ -43,26 +44,34 @@ dependencies:
   avatar_glow: ^3.0.1
   chiclet: ^1.2.0
   loading_indicator: ^3.1.1
-  stacked_card_carousel: ^0.0.4
-  sheet: ^1.0.0
-  sticky_headers: ^0.3.0+2
-  flutter_sticky_header: ^0.7.0
-  dotted_border: ^2.1.0
-  calendar_view: ^1.4.0
   easy_date_timeline: ^2.0.9
   get: ^4.7.2
+  cached_network_image: ^3.4.1
+  flutter_staggered_animations: ^1.1.1
+  change_case: ^2.2.0
+  flip_card_swiper: ^1.0.0
+  stacked_card_carousel: ^0.0.4
+  grouped_list: ^6.0.0
+  pretty_json: ^2.0.0
+  connectivity_plus: ^6.1.4
+  record: ^6.0.0
+  file_picker: ^10.1.9
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  fake_cloud_firestore: ^3.1.0
+  firebase_storage_mocks: ^0.7.0
+  firebase_auth_mocks: ^0.14.1
+  google_sign_in_mocks: ^0.3.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.9
 
 flutter:
   uses-material-design: true
   assets:
       - assets/images/shared/
       - assets/images/onboarding/
-      - assets/audio/shared/
-      - assets/animations/shared/
       - assets/animations/onboarding/
       - assets/data/shared/universities.json

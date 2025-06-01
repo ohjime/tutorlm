@@ -72,6 +72,32 @@ class Tutor extends Equatable {
     };
   }
 
+  /// Creates a [Tutor] instance from a JSON‑compatible map.
+  factory Tutor.fromJson(Map<String, dynamic> json) {
+    return Tutor(
+      uid: json['uid'] as String,
+      bio: json['bio'] as String? ?? '',
+      headline: json['headline'] as String? ?? '',
+      tutorStatus: TutorStatus.values.firstWhere(
+        (status) => status.name == json['tutorStatus'],
+        orElse: () => TutorStatus.inactive,
+      ),
+      courses:
+          (json['courses'] as List<dynamic>?)
+              ?.map((course) => Course.fromJson(course as Map<String, dynamic>))
+              .toList() ??
+          [],
+      academicCredentials:
+          (json['academicCredentials'] as List<dynamic>?)
+              ?.map(
+                (cred) =>
+                    AcademicCredential.fromJson(cred as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+    );
+  }
+
   @override
   List<Object?> get props => [
     uid,
