@@ -1,5 +1,6 @@
 {
     "editor.occurrencesHighlight": "off",
+    "editor.hover.enabled": false,
     "latex-workshop.latex.tools": [
         {
             "name": "pdflatex",
@@ -116,7 +117,9 @@
     ],
     "window.autoDetectColorScheme": true,
     "cSpell.words": [
+        "chiclet",
         "creds",
+        "Superellipse",
         "timeslot",
         "TutorLM"
     ],
