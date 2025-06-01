@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-development/testing" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.7.0">
+<title data-rh="true">Testing | TutorLM</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ohjime.github.io/tutorlm/docs/development/testing"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Testing | TutorLM"><meta data-rh="true" name="description" content="Overview"><meta data-rh="true" property="og:description" content="Overview"><link data-rh="true" rel="icon" href="/tutorlm/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ohjime.github.io/tutorlm/docs/development/testing"><link data-rh="true" rel="alternate" href="https://ohjime.github.io/tutorlm/docs/development/testing" hreflang="en"><link data-rh="true" rel="alternate" href="https://ohjime.github.io/tutorlm/docs/development/testing" hreflang="x-default"><link rel="stylesheet" href="/tutorlm/assets/css/styles.47bdce50.css">
+<script src="/tutorlm/assets/js/runtime~main.ed9e9da1.js" defer="defer"></script>
+<script src="/tutorlm/assets/js/main.9df34eff.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/tutorlm/"><div class="navbar__logo"><img src="/tutorlm/img/logo.png" alt="Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/tutorlm/img/logo.png" alt="Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">TutorLM</b></a><a class="navbar__item navbar__link" href="/tutorlm/docs/manual/start">User Guide</a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" href="/tutorlm/docs/design/">Design</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/tutorlm/docs/development/">Development</a><a href="https://tree.taiga.io/project/ohjime-tutorly/backlog" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Backlog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a><a href="https://github.com/ohjime/tutorlm/" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link navbar-github-icon" aria-label="GitHub repository"></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/">Development Overview</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/domain">Domain Layer</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/tutorlm/docs/development/features/">Features</a><button aria-label="Expand sidebar category &#x27;Features&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/tutorlm/docs/development/testing">Testing</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/setup-deployment">Setup and Deployment</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/tutorlm/docs/development/sprints/">Sprint Reports</a><button aria-label="Expand sidebar category &#x27;Sprint Reports&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a href="https://tree.taiga.io/project/ohjime-tutorly/issues" target="_blank" rel="noopener noreferrer" class="menu__link menuExternalLink_NmtK">Open Issues<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/tutorlm/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">Testing</span><meta itemprop="position" content="1"></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Testing</h1></header>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview">​</a></h2>
+<p>The testing strategy for this project primarily revolves around unit tests, meticulously organized within the <code>test/core</code> directory. This directory is further subdivided into <code>models</code> and <code>repositories</code>, reflecting a clear separation of concerns in the testing approach.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="types-of-tests-and-their-scope">Types of Tests and Their Scope<a href="#types-of-tests-and-their-scope" class="hash-link" aria-label="Direct link to Types of Tests and Their Scope" title="Direct link to Types of Tests and Their Scope">​</a></h3>
+<ol>
+<li>
+<p><strong>Model Tests (<code>test/core/models/</code>)</strong>: These are pure unit tests focused on validating the correctness of the core data structures (models) of the application. They ensure that:</p>
+<ul>
+<li>Object instantiation and construction (including edge cases and validation) behave as expected.</li>
+<li>Methods and logic within the models (e.g., <code>copyWith</code>, <code>toJson</code>, <code>fromJson</code>, custom getters, equality checks, <code>toString</code> representations) function correctly.</li>
+<li>Serialization and deserialization processes are robust and maintain data integrity.</li>
+<li>Enum definitions and their associated properties are accurate.</li>
+</ul>
+</li>
+<li>
+<p><strong>Repository Tests (<code>test/core/repositories/</code>)</strong>: These tests verify the data access layer. While they are unit tests in the sense that they test individual repository classes, they also serve as a form of integration testing for the domain models with the data persistence layer (Firestore) and authentication services. This is achieved through:</p>
+<ul>
+<li><strong>Dependency Injection</strong>: Repositories are designed to accept instances of their dependencies (e.g., <code>FirebaseAuth</code>, <code>FirebaseFirestore</code>, <code>FirebaseStorage</code>) via their constructors. During testing, mock or fake implementations (e.g., <code>MockFirebaseAuth</code>, <code>FakeFirebaseFirestore</code>, <code>MockFirebaseStorage</code>) are injected. This allows for the isolation of the repository logic from live external services, leading to predictable, fast, and reliable tests. The primary purpose of dependency injection here is to enable testability by decoupling components and allowing for controlled test environments.</li>
+<li><strong>CRUD Operations</strong>: Tests cover the create, read, update, and delete (CRUD) operations for each repository, ensuring that data is correctly transformed and persisted to/retrieved from the (mocked) database.</li>
+<li><strong>Stream Handling</strong>: For repositories that expose data streams (e.g., <code>AuthenticationRepository</code>, <code>SessionRepository</code>), tests verify that these streams emit the correct data in response to changes in the underlying (mocked) data source.</li>
+<li><strong>Authentication Flows</strong>: The <code>AuthenticationRepository</code> tests cover various authentication scenarios like sign-up, login (email/password and Google), and logout.</li>
+<li><strong>File Storage</strong>: The <code>StorageRepository</code> tests ensure that file upload logic, including path and filename manipulation, functions as intended using a mock storage solution.</li>
+</ul>
+</li>
+</ol>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="current-testing-landscape-and-future-considerations">Current Testing Landscape and Future Considerations<a href="#current-testing-landscape-and-future-considerations" class="hash-link" aria-label="Direct link to Current Testing Landscape and Future Considerations" title="Direct link to Current Testing Landscape and Future Considerations">​</a></h3>
+<p>The current suite of tests provides a solid foundation by ensuring the reliability of the core business logic and data handling mechanisms.</p>
+<ul>
+<li>
+<p><strong>Integration of Domain Models with Firestore</strong>: The repository tests, by interacting with <code>FakeFirebaseFirestore</code>, effectively act as integration tests between the application&#x27;s domain models and the Firestore database structure and rules (as simulated by the fake implementation). They validate that the models can be correctly serialized to and deserialized from the expected Firestore document format.</p>
+</li>
+<li>
+<p><strong>Areas for Expansion</strong>:</p>
+<ul>
+<li><strong>BLoC Tests</strong>: A notable omission is the testing of BLoC (Business Logic Component) classes. BLoCs are crucial as they integrate repositories with the UI layer, managing state and handling user interactions. Future work should include comprehensive BLoC tests to ensure that UI events trigger the correct business logic and that state changes are emitted as expected.</li>
+<li><strong>Widget Tests</strong>: Flutter&#x27;s widget tests allow for testing UI components in isolation. While acknowledged as potentially &quot;unwieldy,&quot; incorporating widget tests for critical UI components would enhance confidence in the UI&#x27;s behavior and appearance.</li>
+<li><strong>Full Integration Tests</strong>: True end-to-end integration tests, potentially running on a real device or emulator with live Firebase services (in a controlled test project), would provide the highest level of confidence but are typically more complex and slower to run.</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="code-coverage">Code Coverage<a href="#code-coverage" class="hash-link" aria-label="Direct link to Code Coverage" title="Direct link to Code Coverage">​</a></h3>
+<p>Assessing the precise code coverage percentage requires dedicated tools and integration into the CI/CD pipeline. While the existing tests cover a significant portion of the model and repository logic, a formal code coverage analysis would identify any untested code paths and guide further test development. It is recommended to implement such analysis to ensure comprehensive test coverage across the application.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="test-details">Test Details<a href="#test-details" class="hash-link" aria-label="Direct link to Test Details" title="Direct link to Test Details">​</a></h2>
+<p>The following sections provide a detailed breakdown of each test file, enumerating the functionalities that have been verified and are confirmed to be passing.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="model-tests">Model Tests<a href="#model-tests" class="hash-link" aria-label="Direct link to Model Tests" title="Direct link to Model Tests">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="schedule_testdart"><code>schedule_test.dart</code><a href="#schedule_testdart" class="hash-link" aria-label="Direct link to schedule_testdart" title="Direct link to schedule_testdart">​</a></h4>
+<ul>
+<li>✅ <code>Month</code> enum: Correct month numbers.</li>
+<li>✅ <code>Month</code> enum: <code>date()</code> method returns correct <code>DateTime</code>.</li>
+<li>✅ <code>Schedule</code> constructor: Creates schedule with correct year and month.</li>
+<li>✅ <code>Schedule</code> constructor: Creates schedule with valid initial slots.</li>
+<li>✅ <code>Schedule</code> constructor: Throws assertion error with invalid (out-of-month) initial slot.</li>
+<li>✅ <code>Schedule</code> constructor: Handles December to January transition correctly.</li>
+<li>✅ <code>Schedule.addSlot()</code>: Adds valid slot successfully.</li>
+<li>✅ <code>Schedule.addSlot()</code>: Throws <code>ArgumentError</code> for slot outside the schedule&#x27;s month.</li>
+<li>✅ <code>Schedule.addSlot()</code>: Throws <code>ArgumentError</code> for overlapping slots.</li>
+<li>✅ <code>Schedule.addSlot()</code>: Allows adjacent (non-overlapping) slots.</li>
+<li>✅ <code>Schedule.copyWith()</code>: Creates a copy with the same values when no parameters are provided.</li>
+<li>✅ <code>Schedule.copyWith()</code>: Creates a copy with a new month when <code>monthInput</code> is provided.</li>
+<li>✅ <code>Schedule.copyWith()</code>: Creates a copy with new slots when <code>initialSlots</code> are provided.</li>
+<li>✅ <code>Schedule</code> JSON serialization: Serializes to JSON correctly.</li>
+<li>✅ <code>Schedule</code> JSON deserialization: Deserializes from JSON correctly.</li>
+<li>✅ <code>Schedule</code> JSON round-trip: Maintains data integrity through serialization and deserialization.</li>
+<li>✅ <code>Schedule.empty</code> factory: Creates an empty schedule for the current month.</li>
+<li>✅ <code>Schedule.slots</code> getter: Returns an unmodifiable list.</li>
+<li>✅ <code>Schedule</code> equality: Equal when all properties match.</li>
+<li>✅ <code>Schedule</code> equality: Not equal when properties differ.</li>
+<li>✅ <code>Schedule.toString()</code>: Returns a meaningful string representation.</li>
+<li>✅ <code>Schedule</code> edge cases: Handles slot that spans the entire month.</li>
+<li>✅ <code>Schedule</code> edge cases: Handles slot at the exact month boundary.</li>
+<li>✅ <code>Schedule</code> edge cases: Rejects (throws assertion error) slot that starts before the month.</li>
+<li>✅ <code>Schedule</code> edge cases: Rejects (throws assertion error) slot that ends after the month.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="session_list_filter_testdart"><code>session_list_filter_test.dart</code><a href="#session_list_filter_testdart" class="hash-link" aria-label="Direct link to session_list_filter_testdart" title="Direct link to session_list_filter_testdart">​</a></h4>
+<ul>
+<li>✅ <code>SessionListFilter.empty</code>: Equality with default constructor.</li>
+<li>✅ <code>SessionListFilter</code> equality: Filters are equal if all fields match (intended behavior for date normalization and list order).</li>
+<li>✅ <code>SessionListFilter</code> equality: Filters are not equal if any field differs.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="session_testdart"><code>session_test.dart</code><a href="#session_testdart" class="hash-link" aria-label="Direct link to session_testdart" title="Direct link to session_testdart">​</a></h4>
+<ul>
+<li>✅ <code>Session</code> equality: Two <code>Session</code> objects are equal if and only if all properties match.</li>
+<li>✅ <code>Session</code> JSON round-trip: <code>toJson()</code> and <code>fromJson()</code> preserve all properties.</li>
+<li>✅ <code>Session.fromJson()</code>: Defaults to <code>SessionStatus.scheduled</code> if status in JSON is invalid or missing.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="timeslot_testdart"><code>timeslot_test.dart</code><a href="#timeslot_testdart" class="hash-link" aria-label="Direct link to timeslot_testdart" title="Direct link to timeslot_testdart">​</a></h4>
+<ul>
+<li>✅ <code>TimeSlot</code> equality: Two <code>TimeSlot</code> objects are equal if and only if all properties match.</li>
+<li>✅ <code>TimeSlot.overlaps()</code>: Returns <code>true</code> only if time intervals share any instant, <code>false</code> for adjacent or non-overlapping slots.</li>
+<li>✅ <code>TimeSlot</code> JSON round-trip: <code>toJson()</code> and <code>fromJson()</code> preserve all properties.</li>
+<li>✅ <code>TimeSlot.fromJson()</code>: Throws <code>ArgumentError</code> if <code>start</code> or <code>end</code> in JSON is not a string.</li>
+<li>✅ <code>TimeSlot.fromJson()</code>: Throws <code>ArgumentError</code> if <code>start</code> is not before <code>end</code>.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="user_testdart"><code>user_test.dart</code><a href="#user_testdart" class="hash-link" aria-label="Direct link to user_testdart" title="Direct link to user_testdart">​</a></h4>
+<ul>
+<li>✅ <code>User.empty</code>: <code>isEmpty</code> is true, <code>isNotEmpty</code> is false.</li>
+<li>✅ <code>User</code> (not empty): <code>isEmpty</code> is false, <code>isNotEmpty</code> is true.</li>
+<li>✅ <code>User</code> equality and <code>hashCode</code>: Equal if all properties match, and hashCodes are consistent.</li>
+<li>✅ <code>User</code> JSON round-trip: <code>toJson()</code> (aliased as <code>toMap</code>) and <code>fromJson()</code> preserve all properties.</li>
+<li>✅ <code>User.copyWith()</code>: Returns an updated user with specified changes, preserving other fields.</li>
+<li>✅ <code>User.fromJson()</code> role parsing: Correctly parses &#x27;tutor&#x27;, &#x27;student&#x27;, and defaults to &#x27;unknown&#x27; for other values.</li>
+<li>✅ <code>User.fromJson()</code>: Handles null or empty schedule data gracefully (results in <code>null</code> schedule).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="repository-tests">Repository Tests<a href="#repository-tests" class="hash-link" aria-label="Direct link to Repository Tests" title="Direct link to Repository Tests">​</a></h3>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="authentication_repository_testdart"><code>authentication_repository_test.dart</code><a href="#authentication_repository_testdart" class="hash-link" aria-label="Direct link to authentication_repository_testdart" title="Direct link to authentication_repository_testdart">​</a></h4>
+<ul>
+<li>✅ Credential stream: Emits <code>AuthCredential.empty</code> when user is null.</li>
+<li>✅ Credential stream: Emits user credential when user is signed in.</li>
+<li>✅ <code>currentCredential</code>: Returns <code>AuthCredential.empty</code> when no user is signed in.</li>
+<li>✅ <code>currentCredential</code>: Returns user credential when user is signed in.</li>
+<li>✅ <code>signUp()</code>: Creates user with email and password successfully (mocked).</li>
+<li>✅ <code>signUp()</code>: Handles sign-up failure (mocked, checks for resulting credential state).</li>
+<li>✅ <code>logInWithEmailAndPassword()</code>: Signs in user with valid credentials (mocked).</li>
+<li>✅ <code>logInWithEmailAndPassword()</code>: Handles invalid credentials (mocked, checks for resulting credential state).</li>
+<li>✅ <code>logInWithGoogle()</code>: Signs in with Google successfully (mocked).</li>
+<li>✅ <code>logInWithGoogle()</code>: Throws exception when Google sign-in is cancelled (mocked).</li>
+<li>✅ <code>logInWithGoogle()</code>: Handles Google sign-in cancellation and allows retry (mocked).</li>
+<li>✅ <code>logOut()</code>: Signs out user from Firebase and Google (mocked, checks for user state).</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="chat_repository_testdart"><code>chat_repository_test.dart</code><a href="#chat_repository_testdart" class="hash-link" aria-label="Direct link to chat_repository_testdart" title="Direct link to chat_repository_testdart">​</a></h4>
+<ul>
+<li>✅ <code>sendMessage()</code>: Sends a message and updates the chat room successfully in Firestore (fake).</li>
+<li>✅ <code>sendMessage()</code>: Handles multiple messages correctly, updating the chat room&#x27;s last message.</li>
+<li>✅ <code>createChatRoom()</code>: Creates a new chat room successfully in Firestore (fake).</li>
+<li>✅ <code>createChatRoom()</code>: Creates a chat room with correct participant data derived from tutor/student IDs.</li>
+<li>✅ <code>getChatRoom()</code>: Retrieves an existing chat room from Firestore (fake).</li>
+<li>✅ <code>getChatRoom()</code>: Returns <code>null</code> when a chat room does not exist.</li>
+<li>✅ <code>getChatRoom()</code>: Handles chat rooms with null optional fields correctly.</li>
+<li>✅ <code>getMessages()</code>: Returns messages for a chat room, ordered by timestamp (fake).</li>
+<li>✅ <code>getMessages()</code>: Returns an empty list when no messages exist in a chat room.</li>
+<li>✅ <code>markMessagesAsRead()</code>: Marks messages as read for a specific user (messages not sent by the user) in Firestore (fake).</li>
+<li>✅ <code>markMessagesAsRead()</code>: Handles an empty chat room gracefully without errors.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="session_repository_testdart"><code>session_repository_test.dart</code><a href="#session_repository_testdart" class="hash-link" aria-label="Direct link to session_repository_testdart" title="Direct link to session_repository_testdart">​</a></h4>
+<ul>
+<li>✅ <code>getSessions()</code>: Returns an empty list (stream emission) when no sessions exist.</li>
+<li>✅ <code>getSessions()</code>: Returns a list of sessions (stream emission) when sessions exist, mapping Firestore data correctly.</li>
+<li>✅ <code>getSessions()</code>: Defaults to <code>SessionStatus.scheduled</code> if status is missing or invalid in Firestore data.</li>
+<li>✅ <code>create()</code>: Creates a new session document in Firestore (fake) with correct data.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="storage_repository_testdart"><code>storage_repository_test.dart</code><a href="#storage_repository_testdart" class="hash-link" aria-label="Direct link to storage_repository_testdart" title="Direct link to storage_repository_testdart">​</a></h4>
+<ul>
+<li>✅ <code>uploadFile()</code>: Returns an empty string when the provided <code>filePath</code> is empty.</li>
+<li>✅ <code>uploadFile()</code>: Simulates file upload using mock storage and verifies a download URL is returned.</li>
+<li>✅ <code>uploadFile()</code>: Correctly extracts the filename from a complex file path.</li>
+<li>✅ <code>uploadFile()</code>: Creates the proper storage path structure (<code>users/&lt;userId&gt;/uploads/&lt;filename&gt;</code>) in mock storage.</li>
+<li>✅ <code>uploadFile()</code>: Handles various simulated file types (pdf, jpg, mp4, mp3) with mock storage.</li>
+<li>✅ <code>uploadFile()</code>: Handles filenames with special characters (mocked).</li>
+<li>✅ <code>uploadFile()</code>: Handles filenames with multiple dots (mocked).</li>
+<li>✅ <code>uploadFile()</code>: Handles an empty <code>userId</code> gracefully in mock storage operations.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="student_repository_testdart"><code>student_repository_test.dart</code><a href="#student_repository_testdart" class="hash-link" aria-label="Direct link to student_repository_testdart" title="Direct link to student_repository_testdart">​</a></h4>
+<ul>
+<li>✅ <code>createStudent()</code>: Creates a student document in Firestore (fake) with all fields.</li>
+<li>✅ <code>createStudent()</code>: Creates an empty student (using <code>Student.empty</code>) document correctly.</li>
+<li>✅ <code>createStudent()</code>: Creates a student with multiple courses.</li>
+<li>✅ <code>getStudent()</code>: Retrieves and returns an existing student document from Firestore (fake).</li>
+<li>✅ <code>getStudent()</code>: Returns <code>null</code> when the student document does not exist.</li>
+<li>✅ <code>getStudent()</code>: Handles and correctly parses a student document with minimal data (empty strings, default enums).</li>
+<li>✅ <code>getStudent()</code>: Correctly parses student data with different grade levels.</li>
+<li>✅ <code>getStudent()</code>: Correctly parses student data with graduate-level courses.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="tutor_repository_testdart"><code>tutor_repository_test.dart</code><a href="#tutor_repository_testdart" class="hash-link" aria-label="Direct link to tutor_repository_testdart" title="Direct link to tutor_repository_testdart">​</a></h4>
+<ul>
+<li>✅ <code>createTutor()</code>: Creates a tutor document in Firestore (fake) with all fields, including courses and academic credentials.</li>
+<li>✅ <code>createTutor()</code>: Creates an empty tutor (using <code>Tutor.empty</code>) document correctly.</li>
+<li>✅ <code>getTutors()</code>: Returns an empty list when no tutors exist in Firestore (fake).</li>
+<li>✅ <code>getTutors()</code>: Returns all tutors when multiple tutor documents exist.</li>
+<li>✅ <code>getTutors()</code>: Parses tutors with complex data (multiple courses, multiple academic credentials) correctly.</li>
+<li>✅ <code>getTutor()</code>: Retrieves and returns an existing tutor document from Firestore (fake).</li>
+<li>✅ <code>getTutor()</code>: Returns <code>null</code> when the tutor document does not exist.</li>
+<li>✅ <code>getTutor()</code>: Handles and correctly parses a tutor document with minimal data.</li>
+</ul>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="user_repository_testdart"><code>user_repository_test.dart</code><a href="#user_repository_testdart" class="hash-link" aria-label="Direct link to user_repository_testdart" title="Direct link to user_repository_testdart">​</a></h4>
+<ul>
+<li>✅ <code>createUser()</code>: Creates a user document in Firestore (fake) with basic fields.</li>
+<li>✅ <code>createUser()</code>: Creates a user document with optional fields like <code>imageUrl</code>, <code>coverUrl</code>, <code>isAdmin</code>.</li>
+<li>✅ <code>getUser()</code>: Retrieves and returns an existing user document from Firestore (fake).</li>
+<li>✅ <code>getUser()</code>: Returns <code>User.empty</code> when the user document does not exist.</li>
+<li>✅ <code>getUser()</code>: Handles and correctly parses user data that includes a <code>Schedule</code> object.</li>
+<li>✅ <code>updateUser()</code>: Updates an existing user document in Firestore (fake) with new data.</li>
+<li>✅ <code>updateUserRole()</code>: Updates only the <code>role</code> field of a user document.</li>
+<li>✅ <code>updateAdminStatus()</code>: Updates only the <code>isAdmin</code> field of a user document.</li>
+<li>✅ <code>deleteUser()</code>: Deletes a user document from Firestore (fake).</li>
+<li>✅ <code>getUsers()</code>: Returns an empty list when no users exist in Firestore (fake).</li>
+<li>✅ <code>getUsers()</code>: Returns all users when multiple user documents exist.</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/ohjime/tutorlm/tree/main/docs/docs/development/testing.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><span class="theme-last-updated">Last updated<!-- --> on <b><time datetime="2025-06-01T18:22:04.000Z" itemprop="dateModified">Jun 1, 2025</time></b></span></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/tutorlm/docs/development/features/features-signup"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Signup Feature</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/tutorlm/docs/development/setup-deployment"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Setup and Deployment</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#overview" class="table-of-contents__link toc-highlight">Overview</a><ul><li><a href="#types-of-tests-and-their-scope" class="table-of-contents__link toc-highlight">Types of Tests and Their Scope</a></li><li><a href="#current-testing-landscape-and-future-considerations" class="table-of-contents__link toc-highlight">Current Testing Landscape and Future Considerations</a></li><li><a href="#code-coverage" class="table-of-contents__link toc-highlight">Code Coverage</a></li></ul></li><li><a href="#test-details" class="table-of-contents__link toc-highlight">Test Details</a><ul><li><a href="#model-tests" class="table-of-contents__link toc-highlight">Model Tests</a></li><li><a href="#repository-tests" class="table-of-contents__link toc-highlight">Repository Tests</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer"><div class="container container-fluid"><div class="row footer__links"><div class="col footer__col"><div class="footer__title">Resources</div><ul class="footer__items clean-list"><li class="footer__item"><a href="#" class="footer__link-item">Blog</a></li></ul></div><div class="col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/ohjime/tutorlm/tree/main/" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></div></div></div></footer></div>
+</body>
+</html>

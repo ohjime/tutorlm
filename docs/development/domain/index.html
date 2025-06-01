@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-development/domain" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.7.0">
+<title data-rh="true">Domain Layer Documentation | TutorLM</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ohjime.github.io/tutorlm/docs/development/domain"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Domain Layer Documentation | TutorLM"><meta data-rh="true" name="description" content="Overview"><meta data-rh="true" property="og:description" content="Overview"><link data-rh="true" rel="icon" href="/tutorlm/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ohjime.github.io/tutorlm/docs/development/domain"><link data-rh="true" rel="alternate" href="https://ohjime.github.io/tutorlm/docs/development/domain" hreflang="en"><link data-rh="true" rel="alternate" href="https://ohjime.github.io/tutorlm/docs/development/domain" hreflang="x-default"><link rel="stylesheet" href="/tutorlm/assets/css/styles.47bdce50.css">
+<script src="/tutorlm/assets/js/runtime~main.ed9e9da1.js" defer="defer"></script>
+<script src="/tutorlm/assets/js/main.9df34eff.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/tutorlm/"><div class="navbar__logo"><img src="/tutorlm/img/logo.png" alt="Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/tutorlm/img/logo.png" alt="Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">TutorLM</b></a><a class="navbar__item navbar__link" href="/tutorlm/docs/manual/start">User Guide</a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" href="/tutorlm/docs/design/">Design</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/tutorlm/docs/development/">Development</a><a href="https://tree.taiga.io/project/ohjime-tutorly/backlog" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Backlog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a><a href="https://github.com/ohjime/tutorlm/" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link navbar-github-icon" aria-label="GitHub repository"></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/">Development Overview</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/tutorlm/docs/development/domain">Domain Layer</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/tutorlm/docs/development/features/">Features</a><button aria-label="Expand sidebar category &#x27;Features&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/testing">Testing</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/setup-deployment">Setup and Deployment</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/tutorlm/docs/development/sprints/">Sprint Reports</a><button aria-label="Expand sidebar category &#x27;Sprint Reports&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a href="https://tree.taiga.io/project/ohjime-tutorly/issues" target="_blank" rel="noopener noreferrer" class="menu__link menuExternalLink_NmtK">Open Issues<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/tutorlm/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">Domain Layer</span><meta itemprop="position" content="1"></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Domain Layer Documentation</h1></header>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview">​</a></h2>
+<p>The Domain Layer is a crucial part of the application&#x27;s core, responsible for managing the business logic and data entities. It primarily consists of:</p>
+<ol>
+<li><strong>Data Layer Services &amp; Schema:</strong> This refers to the external backend services (like Firebase) and the defined structure (schema) of how data is organized and stored within those services, particularly Firestore.</li>
+<li><strong>Domain Models:</strong> These are the Dart classes that represent the core entities and value objects of the application (e.g., <code>User</code>, <code>Session</code>, <code>Tutor</code>), mirroring the Firestore schema.</li>
+<li><strong>Repositories:</strong> These act as intermediaries between the application&#x27;s use cases (often driven by BLoCs or Cubits in the feature layers) and the data sources, providing a clean API to interact with the domain models and abstracting the direct interaction with the Data Layer Services.</li>
+</ol>
+<p>This document details these components, outlining their responsibilities and interactions.</p>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="entity-relationships-and-firestore-schema">Entity Relationships and Firestore Schema<a href="#entity-relationships-and-firestore-schema" class="hash-link" aria-label="Direct link to Entity Relationships and Firestore Schema" title="Direct link to Entity Relationships and Firestore Schema">​</a></h2>
+<p>This section describes the structure of data as it&#x27;s stored in Firebase Firestore, inferred from your Dart domain models. It also explains the relationships between these data entities.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="firestore-collections-and-schema">Firestore Collections and Schema<a href="#firestore-collections-and-schema" class="hash-link" aria-label="Direct link to Firestore Collections and Schema" title="Direct link to Firestore Collections and Schema">​</a></h3>
+<p>Based on the provided Dart models, the anticipated Firestore schema is as follows:</p>
+<ul>
+<li>
+<p><strong><code>users</code> Collection:</strong></p>
+<ul>
+<li><strong>Document ID:</strong> <code>uid</code> (matches Firebase Authentication UID)</li>
+<li><strong>Purpose:</strong> Stores general information applicable to all users, regardless of their role. This centralized approach avoids data duplication for common attributes.</li>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>email</code>: (String) User&#x27;s email address.</li>
+<li><code>name</code>: (String) User&#x27;s full name.</li>
+<li><code>imageUrl</code>: (String, nullable) URL to the user&#x27;s profile picture.</li>
+<li><code>coverUrl</code>: (String, nullable) URL to the user&#x27;s cover image.</li>
+<li><code>role</code>: (String) The user&#x27;s role (e.g., &quot;tutor&quot;, &quot;student&quot;, &quot;unknown&quot;).</li>
+<li><code>schedule</code>: (Map, nullable) Represents the <code>Schedule</code> model, storing <code>year</code> (int), <code>month</code> (int), and <code>slots</code> (List of <code>TimeSlot</code> maps, where each <code>TimeSlot</code> map contains <code>start</code> and <code>end</code> as ISO DateTime strings).</li>
+<li><code>isAdmin</code>: (Boolean) Flag indicating if the user has administrative privileges.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>tutors</code> Collection:</strong></p>
+<ul>
+<li><strong>Document ID:</strong> <code>uid</code> (matches the <code>uid</code> in the <code>users</code> collection for a user with the &#x27;tutor&#x27; role).</li>
+<li><strong>Purpose:</strong> Stores profile information specific to users who are tutors.</li>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>uid</code>: (String) Primary key, same as the user&#x27;s auth UID.</li>
+<li><code>bio</code>: (String) A short biography of the tutor.</li>
+<li><code>headline</code>: (String) A catchy headline for the tutor&#x27;s profile.</li>
+<li><code>courses</code>: (List of Maps) Each map represents a <code>Course</code> model (e.g., <code>{&quot;subjectType&quot;: &quot;math&quot;, &quot;generalLevel&quot;: &quot;ten&quot;}</code>).</li>
+<li><code>tutorStatus</code>: (String) e.g., &quot;active&quot;, &quot;inactive&quot;.</li>
+<li><code>academicCredentials</code>: (List of Maps) Each map represents an <code>AcademicCredential</code> model.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>students</code> Collection:</strong></p>
+<ul>
+<li><strong>Document ID:</strong> <code>uid</code> (matches the <code>uid</code> in the <code>users</code> collection for a user with the &#x27;student&#x27; role).</li>
+<li><strong>Purpose:</strong> Stores profile information specific to users who are students.</li>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>uid</code>: (String) Primary key, same as the user&#x27;s auth UID.</li>
+<li><code>bio</code>: (String) A short biography of the student.</li>
+<li><code>headline</code>: (String) A profile headline for the student.</li>
+<li><code>status</code>: (String) e.g., &quot;active&quot;, &quot;inactive&quot;.</li>
+<li><code>courses</code>: (List of Maps) Each map represents a <code>Course</code> model the student is interested in.</li>
+<li><code>gradeLevel</code>: (String) The student&#x27;s current grade (e.g., &quot;ten&quot;, &quot;undergraduate&quot;).</li>
+<li><code>educationInstitute</code>: (String) The name of the student&#x27;s educational institution.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>sessions</code> Collection:</strong></p>
+<ul>
+<li><strong>Document ID:</strong> Auto-generated by Firestore.</li>
+<li><strong>Purpose:</strong> Represents scheduled tutoring sessions.</li>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>id</code>: (String) Copy of the Firestore document ID.</li>
+<li><code>timeslot</code>: (Map) Represents the <code>TimeSlot</code> model (e.g., <code>{&quot;start&quot;: &quot;ISO_DATETIME_STRING&quot;, &quot;end&quot;: &quot;ISO_DATETIME_STRING&quot;, &quot;name&quot;: &quot;Optional Name&quot;}</code>).</li>
+<li><code>tutorId</code>: (String) UID of the tutor (references <code>users.uid</code>).</li>
+<li><code>studentId</code>: (String) UID of the student (references <code>users.uid</code>).</li>
+<li><code>status</code>: (String) e.g., &quot;scheduled&quot;, &quot;completed&quot;.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>chatRooms</code> Collection:</strong></p>
+<ul>
+<li><strong>Document ID:</strong> Auto-generated by Firestore.</li>
+<li><strong>Purpose:</strong> Represents a dedicated chat channel.</li>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>id</code>: (String) Copy of the Firestore document ID.</li>
+<li><code>tutorId</code>: (String) UID of the tutor participant.</li>
+<li><code>studentId</code>: (String) UID of the student participant.</li>
+<li><code>tutorName</code>: (String) Denormalized name of the tutor.</li>
+<li><code>studentName</code>: (String) Denormalized name of the student.</li>
+<li><code>sessionId</code>: (String, nullable) ID of the <code>Session</code> this chat is linked to (references <code>sessions.id</code>).</li>
+<li><code>lastMessage</code>: (String, nullable) Content of the last message.</li>
+<li><code>lastMessageTimestamp</code>: (Timestamp, nullable) Timestamp of the last message.</li>
+<li><code>participants</code>: (List of Strings) Array containing <code>tutorId</code> and <code>studentId</code> for querying.</li>
+<li><code>isActive</code>: (Boolean)</li>
+<li><code>createdAt</code>: (Timestamp)</li>
+</ul>
+</li>
+<li><strong>Subcollection: <code>messages</code></strong>
+<ul>
+<li><strong>Document ID:</strong> Auto-generated by Firestore.</li>
+<li><strong>Purpose:</strong> Stores individual messages within a <code>ChatRoom</code>.</li>
+<li><strong>Fields:</strong>
+<ul>
+<li><code>id</code>: (String) Copy of the Firestore document ID.</li>
+<li><code>senderId</code>: (String) UID of the message sender.</li>
+<li><code>senderName</code>: (String) Denormalized name of the sender.</li>
+<li><code>content</code>: (String) Message text.</li>
+<li><code>timestamp</code>: (Timestamp)</li>
+<li><code>isRead</code>: (Boolean)</li>
+<li><code>messageType</code>: (String) e.g., &quot;text&quot;.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="entity-relationship-diagram-erd---conceptual">Entity Relationship Diagram (ERD - Conceptual)<a href="#entity-relationship-diagram-erd---conceptual" class="hash-link" aria-label="Direct link to Entity Relationship Diagram (ERD - Conceptual)" title="Direct link to Entity Relationship Diagram (ERD - Conceptual)">​</a></h3>
+<p>This diagram illustrates the relationships between the main Firestore collections.</p>
+<!-- -->
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="design-rationale-and-key-structures">Design Rationale and Key Structures<a href="#design-rationale-and-key-structures" class="hash-link" aria-label="Direct link to Design Rationale and Key Structures" title="Direct link to Design Rationale and Key Structures">​</a></h3>
+<ul>
+<li>
+<p><strong>Separation of Authentication and User Profile (<code>AuthCredential</code> vs. <code>User</code> model):</strong></p>
+<ul>
+<li>Firebase Authentication handles the actual authentication process (verifying credentials, issuing tokens). The <code>AuthCredential</code> model in your Dart code likely represents the data directly from Firebase Auth (like UID, email from provider).</li>
+<li>The <code>users</code> collection in Firestore (represented by your <code>User</code> Dart model) stores your application-specific user profile. This profile is created <em>after</em> successful authentication and can include much richer information (custom name, roles, application-specific settings, profile picture URLs managed by your app&#x27;s storage, <code>Schedule</code> data, etc.) than what Firebase Auth typically stores.</li>
+<li><strong>Why separate?</strong>
+<ul>
+<li><strong>Flexibility:</strong> Your application&#x27;s user profile can evolve independently of Firebase Auth&#x27;s user object.</li>
+<li><strong>Rich Data:</strong> You can store complex, structured data related to a user that doesn&#x27;t fit into the standard Firebase Auth user properties.</li>
+<li><strong>Security:</strong> Keeps sensitive application data separate from the primary authentication record.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Separation of General User Profile (<code>users</code>) from Role-Specific Profiles (<code>tutors</code>, <code>students</code>):</strong></p>
+<ul>
+<li>The <code>users</code> collection holds data common to <em>all</em> users (e.g., <code>name</code>, <code>email</code>, <code>role</code>, <code>imageUrl</code>, <code>schedule</code>).</li>
+<li><code>tutors</code> and <code>students</code> collections store data unique to each role. They are linked to the <code>users</code> collection via the shared <code>uid</code>.</li>
+<li><strong>Why separate?</strong>
+<ul>
+<li><strong>Data Integrity &amp; Relevance:</strong> Avoids having many nullable fields in a single &quot;uber-profile&quot; collection. A student document won&#x27;t have fields like <code>academicCredentials</code>, and a tutor document won&#x27;t have <code>gradeLevel</code> (as a student property).</li>
+<li><strong>Scalability &amp; Query Performance:</strong> Queries for role-specific information can be targeted directly at the relevant collection.</li>
+<li><strong>Clearer Model:</strong> Makes the domain models (<code>User</code>, <code>Tutor</code>, <code>Student</code> in Dart) cleaner and more focused.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Shared Properties in <code>User</code> Collection (Profile Pictures, Schedule):</strong></p>
+<ul>
+<li>Attributes like <code>imageUrl</code>, <code>coverUrl</code>, and <code>schedule</code> are placed in the <code>users</code> collection because they are considered common functionalities that any user might utilize, regardless of their primary role as a tutor or student.</li>
+<li>For instance, both tutors and students have a profile picture. A tutor&#x27;s <code>schedule</code> represents their availability, while a student&#x27;s <code>schedule</code> might reflect their booked sessions or general study availability.</li>
+<li>Placing these in <code>users</code> centralizes common data, reducing redundancy and simplifying updates to these shared aspects.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>TimeSlot</code> Structure and <code>Schedule</code> Model:</strong></p>
+<ul>
+<li>A <code>TimeSlot</code> is defined by a <code>start</code> and <code>end</code> <code>DateTime</code>. This is a fundamental representation for any schedulable block of time.</li>
+<li>The <code>Schedule</code> model (stored as a map within a <code>User</code> document) groups a list of these <code>TimeSlot</code>s, typically organized by <code>year</code> and <code>month</code>.</li>
+<li><strong>Benefits:</strong>
+<ul>
+<li><strong>Availability Checking:</strong> When a student wants to book a session, the system can fetch the tutor&#x27;s <code>schedule</code> (list of available <code>TimeSlot</code>s) for the relevant period. Checking if a requested time overlaps with existing <code>TimeSlot</code>s becomes a straightforward comparison.</li>
+<li><strong>Sorting &amp; Display:</strong> A list of <code>TimeSlot</code>s can be easily sorted by their <code>start</code> time, which is essential for displaying available slots or booked sessions chronologically.</li>
+<li><strong>Conflict Detection:</strong> The <code>overlaps</code> method in your <code>TimeSlot</code> Dart model is crucial for preventing double bookings or scheduling conflicts.</li>
+<li><strong>Granularity:</strong> This structure allows for precise time management. While your current implementation might focus on hourly slots, the <code>start</code> and <code>end</code> <code>DateTime</code>s can represent any duration.</li>
+<li><strong>Firestore Storage:</strong> Storing <code>DateTime</code>s as ISO strings or Firestore Timestamps within the <code>TimeSlot</code> map is standard and allows for date-based queries (though complex overlap queries directly in Firestore are limited).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>ChatRoom</code> and <code>Messages</code> Subcollection:</strong></p>
+<ul>
+<li>A <code>ChatRoom</code> document establishes a unique conversation channel between two users (identified by <code>tutorId</code> and <code>studentId</code>). The <code>participants</code> array (containing both UIDs) is vital for Firestore queries like &quot;find all chat rooms where <code>currentUser.uid</code> is in <code>participants</code>&quot;.</li>
+<li><code>Messages</code> are stored as a subcollection under their respective <code>ChatRoom</code> document. This is a highly recommended Firestore pattern for one-to-many relationships where the &quot;many&quot; side (messages) can grow large.</li>
+<li><strong>Benefits:</strong>
+<ul>
+<li><strong>Scalability:</strong> Chat rooms can have many messages without making the <code>ChatRoom</code> document itself too large (Firestore documents have a 1MB size limit).</li>
+<li><strong>Query Efficiency:</strong> When fetching messages for a specific chat, you only query that chat&#x27;s <code>messages</code> subcollection, which is much more efficient than querying a global <code>messages</code> collection and filtering by <code>chatRoomId</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>This schema design aims to balance data normalization (reducing redundancy) with denormalization (e.g., <code>tutorName</code>, <code>studentName</code> in <code>ChatRoom</code> for faster reads) to support common query patterns and application features efficiently.</p>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="data-layer-services-external-dependencies">Data Layer Services (External Dependencies)<a href="#data-layer-services-external-dependencies" class="hash-link" aria-label="Direct link to Data Layer Services (External Dependencies)" title="Direct link to Data Layer Services (External Dependencies)">​</a></h2>
+<p>The repositories in the domain layer interact with several external backend services to persist and retrieve data, handle authentication, and manage file storage. These services form the actual data layer that the repositories abstract.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="firebase-firestore"><code>Firebase Firestore</code><a href="#firebase-firestore" class="hash-link" aria-label="Direct link to firebase-firestore" title="Direct link to firebase-firestore">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> A NoSQL document database used for storing and syncing data in real-time.</li>
+<li><strong>Usage by Repositories:</strong>
+<ul>
+<li><code>ChatRepository</code>: Stores <code>ChatRoom</code> and <code>Message</code> documents.</li>
+<li><code>SessionRepository</code>: Stores <code>Session</code> documents.</li>
+<li><code>StudentRepository</code>: Stores <code>Student</code> profile documents.</li>
+<li><code>TutorRepository</code>: Stores <code>Tutor</code> profile documents.</li>
+<li><code>UserRepository</code>: Stores general <code>User</code> profile documents.</li>
+</ul>
+</li>
+<li><strong>Key Interactions:</strong> Creating, reading, updating, deleting documents (CRUD operations), and listening to real-time updates for collections.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="firebase-authentication"><code>Firebase Authentication</code><a href="#firebase-authentication" class="hash-link" aria-label="Direct link to firebase-authentication" title="Direct link to firebase-authentication">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Provides backend services for user authentication, supporting various sign-in methods.</li>
+<li><strong>Usage by Repositories:</strong>
+<ul>
+<li><code>AuthenticationRepository</code>: Manages user sign-up with email/password, sign-in with email/password, sign-out, password reset, and listens to authentication state changes. It also handles credential management after social sign-ins (like Google).</li>
+</ul>
+</li>
+<li><strong>Key Interactions:</strong> User creation, sign-in, sign-out, token management, and auth state observation.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="firebase-storage"><code>Firebase Storage</code><a href="#firebase-storage" class="hash-link" aria-label="Direct link to firebase-storage" title="Direct link to firebase-storage">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Provides secure and scalable object storage for files like images, audio, or videos.</li>
+<li><strong>Usage by Repositories:</strong>
+<ul>
+<li><code>StorageRepository</code>: Manages uploading files (e.g., user profile images, academic credential scans) and retrieving their download URLs.</li>
+</ul>
+</li>
+<li><strong>Key Interactions:</strong> File uploads, obtaining download URLs.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="google-sign-in"><code>Google Sign-In</code><a href="#google-sign-in" class="hash-link" aria-label="Direct link to google-sign-in" title="Direct link to google-sign-in">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> A specific authentication provider that allows users to sign in using their Google accounts.</li>
+<li><strong>Usage by Repositories:</strong>
+<ul>
+<li><code>AuthenticationRepository</code>: Integrates with the Google Sign-In SDK to initiate the Google authentication flow and then uses the obtained credentials to sign the user into Firebase Authentication.</li>
+</ul>
+</li>
+<li><strong>Key Interactions:</strong> Initiating Google sign-in flow, obtaining Google user credentials (ID token, access token).</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="domain-models-libcoremodels">Domain Models (<code>lib/core/models/</code>)<a href="#domain-models-libcoremodels" class="hash-link" aria-label="Direct link to domain-models-libcoremodels" title="Direct link to domain-models-libcoremodels">​</a></h2>
+<p>This section describes the primary data structures (models) used throughout the application. These models define the entities and value objects that the application manipulates and stores.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="academiccredential"><code>AcademicCredential</code><a href="#academiccredential" class="hash-link" aria-label="Direct link to academiccredential" title="Direct link to academiccredential">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents an academic qualification or achievement of a tutor.</li>
+<li><strong>Key Attributes:</strong> <code>institution</code> (String), <code>level</code> (AcademicCredentialLevel enum), <code>fieldOfStudy</code> (String), <code>focus</code> (String), <code>dateIssued</code> (DateTime), <code>imageUrl</code> (String - for a scanned copy).</li>
+<li><strong>Related Enum:</strong> <code>AcademicCredentialLevel</code> (highschool, certificate, diploma, bachelor, masters, doctorate).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="appmode"><code>AppMode</code><a href="#appmode" class="hash-link" aria-label="Direct link to appmode" title="Direct link to appmode">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> An enum to define the operational mode of the application, distinguishing between standard user access and administrative functionalities.</li>
+<li><strong>Values:</strong> <code>admin</code>, <code>user</code>.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="authcredential"><code>AuthCredential</code><a href="#authcredential" class="hash-link" aria-label="Direct link to authcredential" title="Direct link to authcredential">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents the authentication credentials of a user, primarily obtained from Firebase Authentication.</li>
+<li><strong>Key Attributes:</strong> <code>id</code> (String - user&#x27;s unique ID), <code>email</code> (String?).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="chatroom"><code>ChatRoom</code><a href="#chatroom" class="hash-link" aria-label="Direct link to chatroom" title="Direct link to chatroom">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a conversation session between two users (typically a tutor and a student).</li>
+<li><strong>Key Attributes:</strong> <code>id</code> (String), <code>tutorId</code> (String), <code>studentId</code> (String), <code>tutorName</code> (String), <code>studentName</code> (String), <code>sessionId</code> (String - related tutoring session), <code>lastMessage</code> (String?), <code>lastMessageTimestamp</code> (DateTime?), <code>unreadCount</code> (int), <code>isActive</code> (bool), <code>createdAt</code> (DateTime), <code>participants</code> (<code>List&lt;String&gt;</code>).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="course"><code>Course</code><a href="#course" class="hash-link" aria-label="Direct link to course" title="Direct link to course">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a subject at a specific grade level that a tutor can teach or a student needs help with.</li>
+<li><strong>Key Attributes:</strong> <code>subjectType</code> (Subject enum), <code>generalLevel</code> (Grade enum).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="grade"><code>Grade</code><a href="#grade" class="hash-link" aria-label="Direct link to grade" title="Direct link to grade">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> An enum representing academic grade levels.</li>
+<li><strong>Values:</strong> <code>unknown</code>, <code>ten</code>, <code>eleven</code>, <code>twelve</code>, <code>undergraduate</code>, <code>graduate</code>. Includes comparison operators.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="message"><code>Message</code><a href="#message" class="hash-link" aria-label="Direct link to message" title="Direct link to message">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a single message within a <code>ChatRoom</code>.</li>
+<li><strong>Key Attributes:</strong> <code>id</code> (String), <code>chatRoomId</code> (String), <code>senderId</code> (String), <code>senderName</code> (String), <code>content</code> (String), <code>timestamp</code> (DateTime), <code>isRead</code> (bool), <code>messageType</code> (MessageType enum).</li>
+<li><strong>Related Enum:</strong> <code>MessageType</code> (text, image, file, system).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="schedule"><code>Schedule</code><a href="#schedule" class="hash-link" aria-label="Direct link to schedule" title="Direct link to schedule">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a user&#x27;s availability or booked slots for a specific month and year.</li>
+<li><strong>Key Attributes:</strong> <code>year</code> (int), <code>month</code> (Month enum), <code>slots</code> (<code>List&lt;TimeSlot&gt;</code>).</li>
+<li><strong>Related Enum:</strong> <code>Month</code> (january to december).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="session"><code>Session</code><a href="#session" class="hash-link" aria-label="Direct link to session" title="Direct link to session">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a scheduled tutoring session between a tutor and a student.</li>
+<li><strong>Key Attributes:</strong> <code>id</code> (String), <code>timeslot</code> (TimeSlot?), <code>tutorId</code> (String), <code>studentId</code> (String), <code>status</code> (SessionStatus enum).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="sessionlistfilter"><code>SessionListFilter</code><a href="#sessionlistfilter" class="hash-link" aria-label="Direct link to sessionlistfilter" title="Direct link to sessionlistfilter">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> A value object used to filter the list of sessions.</li>
+<li><strong>Key Attributes:</strong> <code>selectedDate</code> (DateTime?), <code>statuses</code> (<code>Set&lt;SessionStatus&gt;</code>), <code>searchStrings</code> (<code>Set&lt;String&gt;</code>).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="sessionstatus"><code>SessionStatus</code><a href="#sessionstatus" class="hash-link" aria-label="Direct link to sessionstatus" title="Direct link to sessionstatus">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> An enum representing the current status of a <code>Session</code>.</li>
+<li><strong>Values:</strong> <code>scheduled</code>, <code>inProgress</code>, <code>completed</code>, <code>cancelled</code>.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="student"><code>Student</code><a href="#student" class="hash-link" aria-label="Direct link to student" title="Direct link to student">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a user with the role of a student. Contains student-specific profile information.</li>
+<li><strong>Key Attributes:</strong> <code>uid</code> (String), <code>bio</code> (String), <code>headline</code> (String), <code>status</code> (StudentStatus enum), <code>courses</code> (<code>List&lt;Course&gt;</code>), <code>gradeLevel</code> (Grade enum), <code>educationInstitute</code> (String).</li>
+<li><strong>Related Enum:</strong> <code>StudentStatus</code> (active, inactive).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="subject"><code>Subject</code><a href="#subject" class="hash-link" aria-label="Direct link to subject" title="Direct link to subject">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> An enum representing academic subjects.</li>
+<li><strong>Values:</strong> <code>math</code>, <code>science</code>, <code>english</code>, <code>chemistry</code>, <code>physics</code>, <code>biology</code>, <code>socialStudies</code>.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="timeslot"><code>TimeSlot</code><a href="#timeslot" class="hash-link" aria-label="Direct link to timeslot" title="Direct link to timeslot">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a specific block of time, typically an hour, defined by a start and end <code>DateTime</code>.</li>
+<li><strong>Key Attributes:</strong> <code>id</code> (String?), <code>name</code> (String?), <code>start</code> (DateTime), <code>end</code> (DateTime).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="tutor"><code>Tutor</code><a href="#tutor" class="hash-link" aria-label="Direct link to tutor" title="Direct link to tutor">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a user with the role of a tutor. Contains tutor-specific profile information.</li>
+<li><strong>Key Attributes:</strong> <code>uid</code> (String), <code>bio</code> (String), <code>headline</code> (String), <code>courses</code> (<code>List&lt;Course&gt;</code>), <code>tutorStatus</code> (TutorStatus enum), <code>academicCredentials</code> (<code>List&lt;AcademicCredential&gt;</code>).</li>
+<li><strong>Related Enum:</strong> <code>TutorStatus</code> (active, inactive).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="user"><code>User</code><a href="#user" class="hash-link" aria-label="Direct link to user" title="Direct link to user">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> Represents a general user in the system, containing common profile information.</li>
+<li><strong>Key Attributes:</strong> <code>email</code> (String), <code>name</code> (String), <code>imageUrl</code> (String?), <code>coverUrl</code> (String?), <code>role</code> (UserRole enum), <code>schedule</code> (Schedule?), <code>isAdmin</code> (bool).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="userrole"><code>UserRole</code><a href="#userrole" class="hash-link" aria-label="Direct link to userrole" title="Direct link to userrole">​</a></h3>
+<ul>
+<li><strong>Purpose:</strong> An enum representing the role of a user within the application.</li>
+<li><strong>Values:</strong> <code>tutor</code>, <code>student</code>, <code>unknown</code>.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="repositories-libcorerepositories">Repositories (<code>lib/core/repositories/</code>)<a href="#repositories-libcorerepositories" class="hash-link" aria-label="Direct link to repositories-libcorerepositories" title="Direct link to repositories-libcorerepositories">​</a></h2>
+<p>This section details each repository, outlining its responsibilities, the services it depends on (see Section under &quot;Data Layer Services&quot;), the domain models it manages (see Section under &quot;Domain Models&quot;), and its public interface.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="authenticationrepository"><code>AuthenticationRepository</code><a href="#authenticationrepository" class="hash-link" aria-label="Direct link to authenticationrepository" title="Direct link to authenticationrepository">​</a></h3>
+<p>Handles all aspects of user authentication, including sign-up, sign-in, sign-out, and password management.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Authentication</code></li>
+<li><code>Google Sign-In</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li><code>AuthCredential</code></li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>get credential</code>: <code>Stream&lt;AuthCredential&gt;</code> - Provides a stream of the current authentication credential, emitting new values upon authentication state changes.</li>
+<li><code>get currentCredential</code>: <code>AuthCredential</code> - Synchronously retrieves the currently cached authentication credential.</li>
+<li><code>signUp({required String email, required String password})</code>: <code>Future&lt;void&gt;</code> - Creates a new user account using email and password.</li>
+<li><code>logInWithGoogle()</code>: <code>Future&lt;void&gt;</code> - Initiates the Google Sign-In flow and authenticates the user with Firebase.</li>
+<li><code>logInWithEmailAndPassword({required String email, required String password})</code>: <code>Future&lt;void&gt;</code> - Signs in an existing user with their email and password.</li>
+<li><code>logOut()</code>: <code>Future&lt;void&gt;</code> - Signs out the currently authenticated user from both Firebase and Google Sign-In if applicable.</li>
+<li><code>resetPassword({required String email})</code>: <code>Future&lt;void&gt;</code> - Sends a password reset email to the provided email address.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="chatrepository"><code>ChatRepository</code><a href="#chatrepository" class="hash-link" aria-label="Direct link to chatrepository" title="Direct link to chatrepository">​</a></h3>
+<p>Manages operations related to chat rooms and messages, including sending messages, creating chat rooms, and retrieving chat history.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Firestore</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li><code>Message</code></li>
+<li><code>ChatRoom</code></li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>sendMessage(String chatRoomId, Message message)</code>: <code>Future&lt;void&gt;</code> - Adds a new message to the specified chat room and updates the chat room&#x27;s last message details.</li>
+<li><code>createChatRoom(ChatRoom chatRoom)</code>: <code>Future&lt;String&gt;</code> - Creates a new chat room document in Firestore and returns its ID.</li>
+<li><code>getChatRoom(String chatRoomId)</code>: <code>Future&lt;ChatRoom?&gt;</code> - Retrieves a specific chat room by its ID.</li>
+<li><code>markMessagesAsRead(String chatRoomId, String userId)</code>: <code>Future&lt;void&gt;</code> - Updates the <code>isRead</code> status of messages in a chat room for a given user.</li>
+<li><code>getMessages(String chatRoomId)</code>: <code>Future&lt;List&lt;Message&gt;&gt;</code> - Fetches all messages for a specific chat room, ordered by timestamp.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="sessionrepository"><code>SessionRepository</code><a href="#sessionrepository" class="hash-link" aria-label="Direct link to sessionrepository" title="Direct link to sessionrepository">​</a></h3>
+<p>Handles data operations for tutoring sessions, such as fetching session lists, creating new sessions, and retrieving details for a specific session.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Firestore</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li><code>Session</code></li>
+<li><code>TimeSlot</code></li>
+<li><code>SessionStatus</code></li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>getSessions()</code>: <code>Stream&lt;List&lt;Session&gt;&gt;</code> - Returns a stream of all sessions, allowing real-time updates.</li>
+<li><code>create(Session session)</code>: <code>Future&lt;void&gt;</code> - Adds a new session document to Firestore.</li>
+<li><code>getSessionById(String sessionId)</code>: <code>Future&lt;Session?&gt;</code> - Retrieves a specific session by its unique ID.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="storagerepository"><code>StorageRepository</code><a href="#storagerepository" class="hash-link" aria-label="Direct link to storagerepository" title="Direct link to storagerepository">​</a></h3>
+<p>Manages file uploads to cloud storage, primarily used for user profile images or other media.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Storage</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li>None directly. Deals with file paths (String) and download URLs (String).</li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>uploadFile(String userId, String filePath)</code>: <code>Future&lt;String&gt;</code> - Uploads a file from the local <code>filePath</code> to a user-specific path in Firebase Storage and returns the public download URL. Returns an empty string if <code>filePath</code> is empty.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="studentrepository"><code>StudentRepository</code><a href="#studentrepository" class="hash-link" aria-label="Direct link to studentrepository" title="Direct link to studentrepository">​</a></h3>
+<p>Manages data operations specific to student profiles.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Firestore</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li><code>Student</code></li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>createStudent(String uid, Student student)</code>: <code>Future&lt;void&gt;</code> - Creates a new student profile document in Firestore, identified by the user&#x27;s UID.</li>
+<li><code>getStudent(String uid)</code>: <code>Future&lt;Student?&gt;</code> - Retrieves a specific student&#x27;s profile by their UID.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="tutorrepository"><code>TutorRepository</code><a href="#tutorrepository" class="hash-link" aria-label="Direct link to tutorrepository" title="Direct link to tutorrepository">​</a></h3>
+<p>Manages data operations specific to tutor profiles.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Firestore</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li><code>Tutor</code></li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>createTutor(String uid, Tutor tutor)</code>: <code>Future&lt;void&gt;</code> - Creates a new tutor profile document in Firestore, identified by the user&#x27;s UID.</li>
+<li><code>getTutors()</code>: <code>Future&lt;List&lt;Tutor&gt;&gt;</code> - Retrieves a list of all tutor profiles.</li>
+<li><code>getTutor(String uid)</code>: <code>Future&lt;Tutor?&gt;</code> - Retrieves a specific tutor&#x27;s profile by their UID.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="userrepository"><code>UserRepository</code><a href="#userrepository" class="hash-link" aria-label="Direct link to userrepository" title="Direct link to userrepository">​</a></h3>
+<p>Handles general user data operations, such as creating, retrieving, updating, and deleting user profiles that are common to all user roles.</p>
+<ul>
+<li><strong>Services Used:</strong>
+<ul>
+<li><code>Firebase Firestore</code></li>
+</ul>
+</li>
+<li><strong>Concerned Domain Models:</strong>
+<ul>
+<li><code>User</code></li>
+<li><code>UserRole</code></li>
+<li><code>Schedule</code></li>
+</ul>
+</li>
+<li><strong>Public Methods:</strong>
+<ul>
+<li><code>createUser(String uid, User user)</code>: <code>Future&lt;void&gt;</code> - Creates a new user document in Firestore, associated with the provided UID.</li>
+<li><code>getUser(String uid)</code>: <code>Future&lt;User&gt;</code> - Retrieves a user document by UID. Returns <code>User.empty</code> if not found.</li>
+<li><code>updateUser(String uid, User user)</code>: <code>Future&lt;void&gt;</code> - Updates an existing user document.</li>
+<li><code>updateUserRole(String uid, UserRole role)</code>: <code>Future&lt;void&gt;</code> - Specifically updates the <code>role</code> field of a user document.</li>
+<li><code>updateAdminStatus(String uid, bool isAdmin)</code>: <code>Future&lt;void&gt;</code> - Specifically updates the <code>isAdmin</code> field of a user document.</li>
+<li><code>deleteUser(String uid)</code>: <code>Future&lt;void&gt;</code> - Deletes a user document by UID.</li>
+<li><code>getUsers()</code>: <code>Future&lt;List&lt;User&gt;&gt;</code> - Retrieves a list of all user documents.</li>
+</ul>
+</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/ohjime/tutorlm/tree/main/docs/docs/development/domain.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><span class="theme-last-updated">Last updated<!-- --> on <b><time datetime="2025-06-01T18:22:04.000Z" itemprop="dateModified">Jun 1, 2025</time></b></span></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/tutorlm/docs/development/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Development Overview</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/tutorlm/docs/development/features/"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Features</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#overview" class="table-of-contents__link toc-highlight">Overview</a></li><li><a href="#entity-relationships-and-firestore-schema" class="table-of-contents__link toc-highlight">Entity Relationships and Firestore Schema</a><ul><li><a href="#firestore-collections-and-schema" class="table-of-contents__link toc-highlight">Firestore Collections and Schema</a></li><li><a href="#entity-relationship-diagram-erd---conceptual" class="table-of-contents__link toc-highlight">Entity Relationship Diagram (ERD - Conceptual)</a></li><li><a href="#design-rationale-and-key-structures" class="table-of-contents__link toc-highlight">Design Rationale and Key Structures</a></li></ul></li><li><a href="#data-layer-services-external-dependencies" class="table-of-contents__link toc-highlight">Data Layer Services (External Dependencies)</a><ul><li><a href="#firebase-firestore" class="table-of-contents__link toc-highlight"><code>Firebase Firestore</code></a></li><li><a href="#firebase-authentication" class="table-of-contents__link toc-highlight"><code>Firebase Authentication</code></a></li><li><a href="#firebase-storage" class="table-of-contents__link toc-highlight"><code>Firebase Storage</code></a></li><li><a href="#google-sign-in" class="table-of-contents__link toc-highlight"><code>Google Sign-In</code></a></li></ul></li><li><a href="#domain-models-libcoremodels" class="table-of-contents__link toc-highlight">Domain Models (<code>lib/core/models/</code>)</a><ul><li><a href="#academiccredential" class="table-of-contents__link toc-highlight"><code>AcademicCredential</code></a></li><li><a href="#appmode" class="table-of-contents__link toc-highlight"><code>AppMode</code></a></li><li><a href="#authcredential" class="table-of-contents__link toc-highlight"><code>AuthCredential</code></a></li><li><a href="#chatroom" class="table-of-contents__link toc-highlight"><code>ChatRoom</code></a></li><li><a href="#course" class="table-of-contents__link toc-highlight"><code>Course</code></a></li><li><a href="#grade" class="table-of-contents__link toc-highlight"><code>Grade</code></a></li><li><a href="#message" class="table-of-contents__link toc-highlight"><code>Message</code></a></li><li><a href="#schedule" class="table-of-contents__link toc-highlight"><code>Schedule</code></a></li><li><a href="#session" class="table-of-contents__link toc-highlight"><code>Session</code></a></li><li><a href="#sessionlistfilter" class="table-of-contents__link toc-highlight"><code>SessionListFilter</code></a></li><li><a href="#sessionstatus" class="table-of-contents__link toc-highlight"><code>SessionStatus</code></a></li><li><a href="#student" class="table-of-contents__link toc-highlight"><code>Student</code></a></li><li><a href="#subject" class="table-of-contents__link toc-highlight"><code>Subject</code></a></li><li><a href="#timeslot" class="table-of-contents__link toc-highlight"><code>TimeSlot</code></a></li><li><a href="#tutor" class="table-of-contents__link toc-highlight"><code>Tutor</code></a></li><li><a href="#user" class="table-of-contents__link toc-highlight"><code>User</code></a></li><li><a href="#userrole" class="table-of-contents__link toc-highlight"><code>UserRole</code></a></li></ul></li><li><a href="#repositories-libcorerepositories" class="table-of-contents__link toc-highlight">Repositories (<code>lib/core/repositories/</code>)</a><ul><li><a href="#authenticationrepository" class="table-of-contents__link toc-highlight"><code>AuthenticationRepository</code></a></li><li><a href="#chatrepository" class="table-of-contents__link toc-highlight"><code>ChatRepository</code></a></li><li><a href="#sessionrepository" class="table-of-contents__link toc-highlight"><code>SessionRepository</code></a></li><li><a href="#storagerepository" class="table-of-contents__link toc-highlight"><code>StorageRepository</code></a></li><li><a href="#studentrepository" class="table-of-contents__link toc-highlight"><code>StudentRepository</code></a></li><li><a href="#tutorrepository" class="table-of-contents__link toc-highlight"><code>TutorRepository</code></a></li><li><a href="#userrepository" class="table-of-contents__link toc-highlight"><code>UserRepository</code></a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="footer"><div class="container container-fluid"><div class="row footer__links"><div class="col footer__col"><div class="footer__title">Resources</div><ul class="footer__items clean-list"><li class="footer__item"><a href="#" class="footer__link-item">Blog</a></li></ul></div><div class="col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/ohjime/tutorlm/tree/main/" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></div></div></div></footer></div>
+</body>
+</html>

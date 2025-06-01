@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-development/index" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.7.0">
+<title data-rh="true">Development Overview | TutorLM</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ohjime.github.io/tutorlm/docs/development/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Development Overview | TutorLM"><meta data-rh="true" name="description" content="This document details the software architecture strategy for TutorLM. Our approach is fundamentally geared towards creating a system that is modular, scalable, easily testable, and straightforward to maintain over time. To achieve these goals, we primarily employ a feature-first organizational structure, where the codebase is segmented by distinct application capabilities. This structure is further reinforced by principles inspired by Clean Architecture, which guide us in establishing a clear separation of concerns across different layers of the application."><meta data-rh="true" property="og:description" content="This document details the software architecture strategy for TutorLM. Our approach is fundamentally geared towards creating a system that is modular, scalable, easily testable, and straightforward to maintain over time. To achieve these goals, we primarily employ a feature-first organizational structure, where the codebase is segmented by distinct application capabilities. This structure is further reinforced by principles inspired by Clean Architecture, which guide us in establishing a clear separation of concerns across different layers of the application."><link data-rh="true" rel="icon" href="/tutorlm/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://ohjime.github.io/tutorlm/docs/development/"><link data-rh="true" rel="alternate" href="https://ohjime.github.io/tutorlm/docs/development/" hreflang="en"><link data-rh="true" rel="alternate" href="https://ohjime.github.io/tutorlm/docs/development/" hreflang="x-default"><link rel="stylesheet" href="/tutorlm/assets/css/styles.47bdce50.css">
+<script src="/tutorlm/assets/js/runtime~main.ed9e9da1.js" defer="defer"></script>
+<script src="/tutorlm/assets/js/main.9df34eff.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();t(null!==e?e:"light")}(),function(){try{const n=new URLSearchParams(window.location.search).entries();for(var[t,e]of n)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/tutorlm/"><div class="navbar__logo"><img src="/tutorlm/img/logo.png" alt="Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/tutorlm/img/logo.png" alt="Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">TutorLM</b></a><a class="navbar__item navbar__link" href="/tutorlm/docs/manual/start">User Guide</a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" href="/tutorlm/docs/design/">Design</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/tutorlm/docs/development/">Development</a><a href="https://tree.taiga.io/project/ohjime-tutorly/backlog" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Backlog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a><a href="https://github.com/ohjime/tutorlm/" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link navbar-github-icon" aria-label="GitHub repository"></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/tutorlm/docs/development/">Development Overview</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/domain">Domain Layer</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/tutorlm/docs/development/features/">Features</a><button aria-label="Expand sidebar category &#x27;Features&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/testing">Testing</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/tutorlm/docs/development/setup-deployment">Setup and Deployment</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist" href="/tutorlm/docs/development/sprints/">Sprint Reports</a><button aria-label="Expand sidebar category &#x27;Sprint Reports&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a href="https://tree.taiga.io/project/ohjime-tutorly/issues" target="_blank" rel="noopener noreferrer" class="menu__link menuExternalLink_NmtK">Open Issues<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/tutorlm/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem" class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link" itemprop="name">Development Overview</span><meta itemprop="position" content="1"></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Development Overview</h1></header>
+<p>This document details the software architecture strategy for TutorLM. Our approach is fundamentally geared towards creating a system that is modular, scalable, easily testable, and straightforward to maintain over time. To achieve these goals, we primarily employ a feature-first organizational structure, where the codebase is segmented by distinct application capabilities. This structure is further reinforced by principles inspired by Clean Architecture, which guide us in establishing a clear separation of concerns across different layers of the application.</p>
+<p>The architecture is built upon several core tenets:</p>
+<ul>
+<li><strong>Modularity:</strong> Features are developed as largely independent units.</li>
+<li><strong>Separation of Concerns:</strong> Clear boundaries between UI logic, core business rules, and data handling.</li>
+<li><strong>Dependency Rule:</strong> Dependencies point inwards—from Presentation to Domain, with Data serving Domain.</li>
+<li><strong>Testability:</strong> Each layer/component can be verified in isolation.</li>
+<li><strong>Scalability &amp; Maintainability:</strong> New features integrate with minimal disruption; codebase remains organized and adaptable.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="architectural-layers-and-code-structure">Architectural Layers and Code Structure<a href="#architectural-layers-and-code-structure" class="hash-link" aria-label="Direct link to Architectural Layers and Code Structure" title="Direct link to Architectural Layers and Code Structure">​</a></h3>
+<p>The application is conceptually divided into three primary layers:</p>
+<ol>
+<li><strong>Presentation (Application) Layer</strong></li>
+<li><strong>Domain Layer</strong></li>
+<li><strong>Data Layer</strong></li>
+</ol>
+<p>Physically, the codebase reflects this through feature-specific folders, a central <code>core</code> folder, and an <code>app</code> folder, each with a distinct role.</p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="feature-driven-development">Feature-Driven Development<a href="#feature-driven-development" class="hash-link" aria-label="Direct link to Feature-Driven Development" title="Direct link to Feature-Driven Development">​</a></h3>
+<p>The cornerstone of our organizational strategy is a <strong>feature-based approach</strong>. Each significant capability (e.g., Authentication, Session Management, Chat, User Profile) is encapsulated within its own folder (e.g., <code>lib/auth/</code>, <code>lib/session/</code>).</p>
+<ul>
+<li><strong>UI, state management, and feature logic are co-located.</strong></li>
+<li><strong>Feature modules are highly independent,</strong> depending mainly on the <code>core</code> folder (for shared business logic, domain models, repository interfaces) and occasionally the <code>app</code> folder (for global configs, routing, shared state).</li>
+<li><strong>Direct dependencies between features are minimized,</strong> promoting decoupling and isolation.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="the-presentation-layer">The Presentation Layer<a href="#the-presentation-layer" class="hash-link" aria-label="Direct link to The Presentation Layer" title="Direct link to The Presentation Layer">​</a></h3>
+<p>Responsible for everything the user sees and interacts with:</p>
+<ul>
+<li><strong>UI Components:</strong> Widgets/Views in each feature folder (e.g., <code>lib/session/view/</code>, <code>lib/session/widgets/</code>).</li>
+<li><strong>State Management:</strong> Predominantly uses the Bloc library. Each feature has its own Blocs or Cubits (e.g., <code>lib/session/bloc/</code>).<!-- -->
+<ul>
+<li><strong>Blocs:</strong> For complex state with multiple events and transformations.</li>
+<li><strong>Cubits:</strong> For simpler, lightweight state management.</li>
+</ul>
+</li>
+<li><strong>UI widgets listen to state changes</strong> (using <code>BlocBuilder</code> or similar) and rebuild accordingly.</li>
+<li><strong>User actions</strong> are dispatched as events to Blocs or as method calls to Cubits.</li>
+<li><strong>The <code>app</code> folder</strong> (e.g., <code>lib/app/</code>):<!-- -->
+<ul>
+<li>Manages global state (e.g., authentication status, theme, localization) via a global <code>AppBloc</code>.</li>
+<li>Handles root navigation setup and app lifecycle management.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Interaction Flow:</strong></p>
+<ul>
+<li>UI reacts to Bloc/Cubit state changes.</li>
+<li>User interactions are channeled to state management components.</li>
+<li>Blocs/Cubits interact with repositories in the Domain Layer.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="the-domain-layer">The Domain Layer<a href="#the-domain-layer" class="hash-link" aria-label="Direct link to The Domain Layer" title="Direct link to The Domain Layer">​</a></h3>
+<p>Encapsulated primarily within the <code>core</code> folder. This is the application&#x27;s business logic and core data structures.</p>
+<ul>
+<li><strong>Domain Models (Entities):</strong> Plain Dart objects (e.g., <code>User</code>, <code>Session</code>, <code>Course</code> in <code>lib/core/models/</code>).</li>
+<li><strong>Repository Interfaces:</strong> Abstract contracts (e.g., <code>AuthenticationRepository</code>, <code>SessionRepository</code> in <code>lib/core/repositories/</code>).</li>
+<li><strong>Use Cases:</strong> (Optional) Encapsulate specific business logic/user stories.</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li><strong>No Flutter-specific code.</strong></li>
+<li><strong>No widgets or Flutter dependencies.</strong></li>
+<li><strong>Platform-agnostic and highly testable.</strong></li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="the-data-layer">The Data Layer<a href="#the-data-layer" class="hash-link" aria-label="Direct link to The Data Layer" title="Direct link to The Data Layer">​</a></h3>
+<p>Responsible for data retrieval, storage, and communication with external/local sources. Provides concrete implementations for repository interfaces.</p>
+<ul>
+<li><strong>Repository Implementations:</strong> In <code>lib/core/repositories/</code>, implement interfaces from the Domain Layer (e.g., <code>SessionRepositoryImpl</code>).</li>
+<li><strong>Data Sources:</strong>
+<ul>
+<li><strong>External Services/SDKs:</strong> Firebase Auth, Firestore, Storage, FCM, Google Sign-In, etc.</li>
+<li><strong>Local Data Sources:</strong> (If needed) SQLite, shared preferences, etc.</li>
+</ul>
+</li>
+<li><strong>Data Transfer Objects (DTOs):</strong> Used for mapping between external data and Domain Models.</li>
+<li><strong>Data Transformation:</strong> Converts raw data (e.g., Firestore docs, JSON) to Domain Models and vice versa.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Even without a dedicated <code>data_sources</code> sub-folder, the Data Layer&#x27;s responsibilities are fulfilled by repository implementations that interact with SDKs.</p>
+</blockquote>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="understanding-interaction-and-data-flow">Understanding Interaction and Data Flow<a href="#understanding-interaction-and-data-flow" class="hash-link" aria-label="Direct link to Understanding Interaction and Data Flow" title="Direct link to Understanding Interaction and Data Flow">​</a></h3>
+<p>The architecture promotes a clear, unidirectional flow of data and dependencies:</p>
+<ol>
+<li><strong>User Interaction</strong> occurs in a UI widget.</li>
+<li><strong>Event/Action</strong> is dispatched to a Bloc/Cubit.</li>
+<li><strong>Bloc/Cubit</strong> communicates with a Repository Interface (Domain Layer).</li>
+<li><strong>Repository Interface</strong> is routed to its Concrete Implementation (Data Layer) via Dependency Injection.</li>
+<li><strong>Repository Implementation</strong> interacts with the Data Source (e.g., Firebase).</li>
+<li><strong>Data is Retrieved/Transformed</strong> into Domain Models.</li>
+<li><strong>Domain Model(s) or error</strong> are returned to the Bloc/Cubit.</li>
+<li><strong>Bloc/Cubit emits a New State.</strong></li>
+<li><strong>UI Widgets rebuild</strong> to reflect the new state.</li>
+</ol>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="facilitating-inter-feature-communication">Facilitating Inter-Feature Communication<a href="#facilitating-inter-feature-communication" class="hash-link" aria-label="Direct link to Facilitating Inter-Feature Communication" title="Direct link to Facilitating Inter-Feature Communication">​</a></h3>
+<ul>
+<li><strong>Surface-Level (Navigational):</strong>
+<ul>
+<li>Managed in <code>main.dart</code> or a router config file.</li>
+<li>Features navigate via named routes (e.g., <code>Navigator.pushNamed(context, &#x27;/featureB_view&#x27;)</code>).</li>
+<li>Avoids direct import dependencies between feature UIs.</li>
+</ul>
+</li>
+<li><strong>Deeper (Data-Driven):</strong>
+<ul>
+<li>Mediated through shared repositories in the <code>core</code> folder.</li>
+<li>Repositories are provided high in the widget tree (e.g., with <code>RepositoryProvider</code>).</li>
+<li>Repositories may expose data as <strong>Streams</strong> (e.g., <code>Stream&lt;List&lt;Session&gt;&gt;</code>).</li>
+<li>Features subscribe to streams and react to updates, enabling a reactive, decoupled system.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="managing-cross-cutting-concerns">Managing Cross-Cutting Concerns<a href="#managing-cross-cutting-concerns" class="hash-link" aria-label="Direct link to Managing Cross-Cutting Concerns" title="Direct link to Managing Cross-Cutting Concerns">​</a></h3>
+<ul>
+<li><strong>Dependency Injection:</strong>
+<ul>
+<li>Uses <code>RepositoryProvider</code> and <code>BlocProvider</code> from <code>flutter_bloc</code> for dependency management and testability.</li>
+</ul>
+</li>
+<li><strong>Consistent Styling &amp; Theming:</strong>
+<ul>
+<li>Centralized in <code>lib/core/style/</code> (e.g., <code>themes.dart</code>).</li>
+</ul>
+</li>
+<li><strong>Shared Widgets:</strong>
+<ul>
+<li>Common UI elements in <code>lib/core/widgets/</code>.</li>
+</ul>
+</li>
+<li><strong>Utilities &amp; Formatters:</strong>
+<ul>
+<li>Helper functions in <code>lib/core/utils/</code>.</li>
+</ul>
+</li>
+<li><strong>Error Handling:</strong>
+<ul>
+<li>Repositories return results indicating success/failure (e.g., <code>Either</code>, custom <code>Result</code>, or typed exceptions).</li>
+<li>Blocs/Cubits translate errors into UI states (e.g., <code>ErrorState</code>).</li>
+</ul>
+</li>
+<li><strong>Application Configuration:</strong>
+<ul>
+<li>Centralized (e.g., <code>firebase_options.dart</code>, environment configs).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="advantages-of-this-architectural-approach">Advantages of This Architectural Approach<a href="#advantages-of-this-architectural-approach" class="hash-link" aria-label="Direct link to Advantages of This Architectural Approach" title="Direct link to Advantages of This Architectural Approach">​</a></h3>
+<ul>
+<li><strong>Modularity &amp; Decoupling:</strong> Features are well-isolated and easy to manage.</li>
+<li><strong>Testability:</strong>
+<ul>
+<li>Blocs/Cubits can be unit-tested with mocked repositories.</li>
+<li>Domain logic is testable in isolation.</li>
+<li>Repository implementations can be tested with mocked data sources.</li>
+<li>Widget testing is simplified by providing mock Blocs/Cubits.</li>
+</ul>
+</li>
+<li><strong>Scalability:</strong> New features or changes have localized impact.</li>
+<li><strong>Maintainability:</strong> Clear structure reduces cognitive load and risk of regressions.</li>
+<li><strong>Parallel Development:</strong> Teams can work on different features concurrently with minimal conflicts.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="visualizing-the-high-level-architecture-of-tutorlm">Visualizing the High-Level Architecture of TutorLM<a href="#visualizing-the-high-level-architecture-of-tutorlm" class="hash-link" aria-label="Direct link to Visualizing the High-Level Architecture of TutorLM" title="Direct link to Visualizing the High-Level Architecture of TutorLM">​</a></h3>
+<p><img decoding="async" loading="lazy" alt="TutorLM Architecture" src="/tutorlm/assets/images/highlevel-ce7e654a273899edf0d1cc54787bc5a9.svg" width="1519" height="1631" class="img_ev3q"></p>
+<hr>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="potential-considerations-and-trade-offs">Potential Considerations and Trade-offs<a href="#potential-considerations-and-trade-offs" class="hash-link" aria-label="Direct link to Potential Considerations and Trade-offs" title="Direct link to Potential Considerations and Trade-offs">​</a></h3>
+<ul>
+<li><strong>Initial Setup Complexity:</strong>
+<ul>
+<li>Higher than monolithic approaches; more boilerplate and a steeper learning curve.</li>
+</ul>
+</li>
+<li><strong>For Small/Simple Projects:</strong>
+<ul>
+<li>Strict layering may be overkill, but pays off as the app grows.</li>
+</ul>
+</li>
+</ul>
+<hr></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col"><a href="https://github.com/ohjime/tutorlm/tree/main/docs/docs/development/index.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><span class="theme-last-updated">Last updated<!-- --> on <b><time datetime="2025-06-01T18:22:04.000Z" itemprop="dateModified">Jun 1, 2025</time></b></span></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--next" href="/tutorlm/docs/development/domain"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Domain Layer</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#architectural-layers-and-code-structure" class="table-of-contents__link toc-highlight">Architectural Layers and Code Structure</a></li><li><a href="#feature-driven-development" class="table-of-contents__link toc-highlight">Feature-Driven Development</a></li><li><a href="#the-presentation-layer" class="table-of-contents__link toc-highlight">The Presentation Layer</a></li><li><a href="#the-domain-layer" class="table-of-contents__link toc-highlight">The Domain Layer</a></li><li><a href="#the-data-layer" class="table-of-contents__link toc-highlight">The Data Layer</a></li><li><a href="#understanding-interaction-and-data-flow" class="table-of-contents__link toc-highlight">Understanding Interaction and Data Flow</a></li><li><a href="#facilitating-inter-feature-communication" class="table-of-contents__link toc-highlight">Facilitating Inter-Feature Communication</a></li><li><a href="#managing-cross-cutting-concerns" class="table-of-contents__link toc-highlight">Managing Cross-Cutting Concerns</a></li><li><a href="#advantages-of-this-architectural-approach" class="table-of-contents__link toc-highlight">Advantages of This Architectural Approach</a></li><li><a href="#visualizing-the-high-level-architecture-of-tutorlm" class="table-of-contents__link toc-highlight">Visualizing the High-Level Architecture of TutorLM</a></li><li><a href="#potential-considerations-and-trade-offs" class="table-of-contents__link toc-highlight">Potential Considerations and Trade-offs</a></li></ul></div></div></div></div></main></div></div></div><footer class="footer"><div class="container container-fluid"><div class="row footer__links"><div class="col footer__col"><div class="footer__title">Resources</div><ul class="footer__items clean-list"><li class="footer__item"><a href="#" class="footer__link-item">Blog</a></li></ul></div><div class="col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/ohjime/tutorlm/tree/main/" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a></li></ul></div></div></div></footer></div>
+</body>
+</html>
