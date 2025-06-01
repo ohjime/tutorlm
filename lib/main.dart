@@ -1,9 +1,13 @@
 import 'package:app/home/home.dart';
-import 'package:app/home/widgets/home_tab.dart';
+import 'package:app/session/session.dart';
+import 'package:app/chat/exports.dart';
+import 'package:app/settings/settings.dart';
+import 'package:chiclet/chiclet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app/firebase_options.dart';
 import 'package:app/core/core.dart';
 import 'package:app/app/app.dart';
@@ -17,7 +21,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize the Bloc Observer for our Application
-  Bloc.observer = CoreObserver();
+  // Bloc.observer = CoreObserver();
 
   // Initialize Authentication Repository and wait for the first user's credentials
   // to be emitted.
@@ -27,10 +31,26 @@ Future<void> main() async {
   // Initialize User Repository
   final userRepository = UserRepository();
 
+  // Initialize Session Repository
+  final sessionRepository = SessionRepository();
+
+  // Initialize Chat Repository
+  final chatRepository = ChatRepository();
+
+  // Initialize the Tutor Repository
+  final tutorRepository = TutorRepository();
+
+  // Initialize the student repository
+  final studentRepository = StudentRepository();
+
   runApp(
     App(
       authenticationRepository: authenticationRepository,
       userRepository: userRepository,
+      sessionRepository: sessionRepository,
+      chatRepository: chatRepository,
+      tutorRepository: tutorRepository,
+      studentRepository: studentRepository,
     ),
   );
 }
@@ -39,12 +59,24 @@ class App extends StatelessWidget {
   const App({
     required AuthenticationRepository authenticationRepository,
     required UserRepository userRepository,
+    required SessionRepository sessionRepository,
+    required ChatRepository chatRepository,
+    required TutorRepository tutorRepository,
+    required StudentRepository studentRepository,
     super.key,
   }) : _authenticationRepository = authenticationRepository,
-       _userRepository = userRepository;
+       _userRepository = userRepository,
+       _sessionRepository = sessionRepository,
+       _chatRepository = chatRepository,
+       _tutorRepository = tutorRepository,
+       _studentRepository = studentRepository;
 
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
+  final SessionRepository _sessionRepository;
+  final ChatRepository _chatRepository;
+  final TutorRepository _tutorRepository;
+  final StudentRepository _studentRepository;
   Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
@@ -55,26 +87,74 @@ class App extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case '/signup':
         return MaterialPageRoute(builder: (_) => const SignupPage());
+      case '/settings':
+        return MaterialPageRoute(builder: (_) => const SettingsPage());
+      case '/session_detail':
+        final sessionId = settings.arguments as String?;
+        if (sessionId == null) {
+          return null; // Invalid route if no session ID provided
+        }
+        return MaterialPageRoute(
+          builder: (_) => SessionDetailPage(sessionId: sessionId),
+        );
       case '/home':
         return MaterialPageRoute(
           builder: (_) => HomePage(
             tabs: [
               HomeTab(
-                tabBody: Container(
-                  color: Colors.blue,
-                  key: ValueKey('Sessions'),
-                ), // Replace with actual tab body widget
-                tabTitle: 'Sessidsfsdns',
-                tabSubtitle: 'List',
+                tabBody: SessionListView(),
+                tabTitle: 'Sessions',
+                tabAction: (context) => ChicletAnimatedButton(
+                  onPressed: () async {
+                    HapticFeedback.lightImpact();
+                    showModalBottomSheet(
+                      useSafeArea: true,
+                      isScrollControlled: true,
+
+                      enableDrag: false,
+                      context: context,
+                      builder: (context) => const SessionCreateModal(),
+                    );
+                  },
+                  height: 28,
+                  width: 130,
+                  borderRadius: 10,
+                  buttonHeight: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.add, size: 14),
+                      const SizedBox(width: 4),
+                      Text('New Session'),
+                    ],
+                  ),
+                ),
                 tabIcon: Icon(Icons.list),
               ),
               HomeTab(
-                tabBody: Container(
-                  color: Colors.red,
-                  key: ValueKey('Messages'),
-                ), // Replace with actual tab body widget
-                tabTitle: 'Messages',
-                tabSubtitle: 'List',
+                tabBody: MessagesPage(),
+                tabTitle: 'Message',
+                tabAction: (context) => ChicletAnimatedButton(
+                  onPressed: () async {
+                    HapticFeedback.lightImpact();
+                    await Future.delayed(const Duration(milliseconds: 60));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => NewChatPage()),
+                    );
+                  },
+                  height: 28,
+                  width: 130,
+                  borderRadius: 10,
+                  buttonHeight: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.add, size: 14),
+                      const SizedBox(width: 4),
+                      Text('New Message'),
+                    ],
+                  ),
+                ),
                 tabIcon: Icon(Icons.message),
               ),
             ],
@@ -105,6 +185,10 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider.value(value: _authenticationRepository),
         RepositoryProvider.value(value: _userRepository),
+        RepositoryProvider.value(value: _sessionRepository),
+        RepositoryProvider.value(value: _chatRepository),
+        RepositoryProvider.value(value: _tutorRepository),
+        RepositoryProvider.value(value: _studentRepository),
       ],
       child: AppView(onGenerateRoute: _onGenerateRoute),
     );
