@@ -1,0 +1,179 @@
+---
+id: testing
+sidebar_position: 3
+title: Testing
+---
+
+# Testing
+
+## Overview
+
+The testing strategy for this project primarily revolves around unit tests, meticulously organized within the `test/core` directory. This directory is further subdivided into `models` and `repositories`, reflecting a clear separation of concerns in the testing approach.
+
+### Types of Tests and Their Scope
+
+1.  **Model Tests (`test/core/models/`)**: These are pure unit tests focused on validating the correctness of the core data structures (models) of the application. They ensure that:
+    *   Object instantiation and construction (including edge cases and validation) behave as expected.
+    *   Methods and logic within the models (e.g., `copyWith`, `toJson`, `fromJson`, custom getters, equality checks, `toString` representations) function correctly.
+    *   Serialization and deserialization processes are robust and maintain data integrity.
+    *   Enum definitions and their associated properties are accurate.
+
+2.  **Repository Tests (`test/core/repositories/`)**: These tests verify the data access layer. While they are unit tests in the sense that they test individual repository classes, they also serve as a form of integration testing for the domain models with the data persistence layer (Firestore) and authentication services. This is achieved through:
+    *   **Dependency Injection**: Repositories are designed to accept instances of their dependencies (e.g., `FirebaseAuth`, `FirebaseFirestore`, `FirebaseStorage`) via their constructors. During testing, mock or fake implementations (e.g., `MockFirebaseAuth`, `FakeFirebaseFirestore`, `MockFirebaseStorage`) are injected. This allows for the isolation of the repository logic from live external services, leading to predictable, fast, and reliable tests. The primary purpose of dependency injection here is to enable testability by decoupling components and allowing for controlled test environments.
+    *   **CRUD Operations**: Tests cover the create, read, update, and delete (CRUD) operations for each repository, ensuring that data is correctly transformed and persisted to/retrieved from the (mocked) database.
+    *   **Stream Handling**: For repositories that expose data streams (e.g., `AuthenticationRepository`, `SessionRepository`), tests verify that these streams emit the correct data in response to changes in the underlying (mocked) data source.
+    *   **Authentication Flows**: The `AuthenticationRepository` tests cover various authentication scenarios like sign-up, login (email/password and Google), and logout.
+    *   **File Storage**: The `StorageRepository` tests ensure that file upload logic, including path and filename manipulation, functions as intended using a mock storage solution.
+
+### Current Testing Landscape and Future Considerations
+
+The current suite of tests provides a solid foundation by ensuring the reliability of the core business logic and data handling mechanisms.
+
+*   **Integration of Domain Models with Firestore**: The repository tests, by interacting with `FakeFirebaseFirestore`, effectively act as integration tests between the application's domain models and the Firestore database structure and rules (as simulated by the fake implementation). They validate that the models can be correctly serialized to and deserialized from the expected Firestore document format.
+
+*   **Areas for Expansion**:
+    *   **BLoC Tests**: A notable omission is the testing of BLoC (Business Logic Component) classes. BLoCs are crucial as they integrate repositories with the UI layer, managing state and handling user interactions. Future work should include comprehensive BLoC tests to ensure that UI events trigger the correct business logic and that state changes are emitted as expected.
+    *   **Widget Tests**: Flutter's widget tests allow for testing UI components in isolation. While acknowledged as potentially "unwieldy," incorporating widget tests for critical UI components would enhance confidence in the UI's behavior and appearance.
+    *   **Full Integration Tests**: True end-to-end integration tests, potentially running on a real device or emulator with live Firebase services (in a controlled test project), would provide the highest level of confidence but are typically more complex and slower to run.
+
+### Code Coverage
+
+Assessing the precise code coverage percentage requires dedicated tools and integration into the CI/CD pipeline. While the existing tests cover a significant portion of the model and repository logic, a formal code coverage analysis would identify any untested code paths and guide further test development. It is recommended to implement such analysis to ensure comprehensive test coverage across the application.
+
+## Test Details
+
+The following sections provide a detailed breakdown of each test file, enumerating the functionalities that have been verified and are confirmed to be passing.
+
+### Model Tests
+
+#### `schedule_test.dart`
+*   ✅ `Month` enum: Correct month numbers.
+*   ✅ `Month` enum: `date()` method returns correct `DateTime`.
+*   ✅ `Schedule` constructor: Creates schedule with correct year and month.
+*   ✅ `Schedule` constructor: Creates schedule with valid initial slots.
+*   ✅ `Schedule` constructor: Throws assertion error with invalid (out-of-month) initial slot.
+*   ✅ `Schedule` constructor: Handles December to January transition correctly.
+*   ✅ `Schedule.addSlot()`: Adds valid slot successfully.
+*   ✅ `Schedule.addSlot()`: Throws `ArgumentError` for slot outside the schedule's month.
+*   ✅ `Schedule.addSlot()`: Throws `ArgumentError` for overlapping slots.
+*   ✅ `Schedule.addSlot()`: Allows adjacent (non-overlapping) slots.
+*   ✅ `Schedule.copyWith()`: Creates a copy with the same values when no parameters are provided.
+*   ✅ `Schedule.copyWith()`: Creates a copy with a new month when `monthInput` is provided.
+*   ✅ `Schedule.copyWith()`: Creates a copy with new slots when `initialSlots` are provided.
+*   ✅ `Schedule` JSON serialization: Serializes to JSON correctly.
+*   ✅ `Schedule` JSON deserialization: Deserializes from JSON correctly.
+*   ✅ `Schedule` JSON round-trip: Maintains data integrity through serialization and deserialization.
+*   ✅ `Schedule.empty` factory: Creates an empty schedule for the current month.
+*   ✅ `Schedule.slots` getter: Returns an unmodifiable list.
+*   ✅ `Schedule` equality: Equal when all properties match.
+*   ✅ `Schedule` equality: Not equal when properties differ.
+*   ✅ `Schedule.toString()`: Returns a meaningful string representation.
+*   ✅ `Schedule` edge cases: Handles slot that spans the entire month.
+*   ✅ `Schedule` edge cases: Handles slot at the exact month boundary.
+*   ✅ `Schedule` edge cases: Rejects (throws assertion error) slot that starts before the month.
+*   ✅ `Schedule` edge cases: Rejects (throws assertion error) slot that ends after the month.
+
+#### `session_list_filter_test.dart`
+*   ✅ `SessionListFilter.empty`: Equality with default constructor.
+*   ✅ `SessionListFilter` equality: Filters are equal if all fields match (intended behavior for date normalization and list order).
+*   ✅ `SessionListFilter` equality: Filters are not equal if any field differs.
+
+#### `session_test.dart`
+*   ✅ `Session` equality: Two `Session` objects are equal if and only if all properties match.
+*   ✅ `Session` JSON round-trip: `toJson()` and `fromJson()` preserve all properties.
+*   ✅ `Session.fromJson()`: Defaults to `SessionStatus.scheduled` if status in JSON is invalid or missing.
+
+#### `timeslot_test.dart`
+*   ✅ `TimeSlot` equality: Two `TimeSlot` objects are equal if and only if all properties match.
+*   ✅ `TimeSlot.overlaps()`: Returns `true` only if time intervals share any instant, `false` for adjacent or non-overlapping slots.
+*   ✅ `TimeSlot` JSON round-trip: `toJson()` and `fromJson()` preserve all properties.
+*   ✅ `TimeSlot.fromJson()`: Throws `ArgumentError` if `start` or `end` in JSON is not a string.
+*   ✅ `TimeSlot.fromJson()`: Throws `ArgumentError` if `start` is not before `end`.
+
+#### `user_test.dart`
+*   ✅ `User.empty`: `isEmpty` is true, `isNotEmpty` is false.
+*   ✅ `User` (not empty): `isEmpty` is false, `isNotEmpty` is true.
+*   ✅ `User` equality and `hashCode`: Equal if all properties match, and hashCodes are consistent.
+*   ✅ `User` JSON round-trip: `toJson()` (aliased as `toMap`) and `fromJson()` preserve all properties.
+*   ✅ `User.copyWith()`: Returns an updated user with specified changes, preserving other fields.
+*   ✅ `User.fromJson()` role parsing: Correctly parses 'tutor', 'student', and defaults to 'unknown' for other values.
+*   ✅ `User.fromJson()`: Handles null or empty schedule data gracefully (results in `null` schedule).
+
+### Repository Tests
+
+#### `authentication_repository_test.dart`
+*   ✅ Credential stream: Emits `AuthCredential.empty` when user is null.
+*   ✅ Credential stream: Emits user credential when user is signed in.
+*   ✅ `currentCredential`: Returns `AuthCredential.empty` when no user is signed in.
+*   ✅ `currentCredential`: Returns user credential when user is signed in.
+*   ✅ `signUp()`: Creates user with email and password successfully (mocked).
+*   ✅ `signUp()`: Handles sign-up failure (mocked, checks for resulting credential state).
+*   ✅ `logInWithEmailAndPassword()`: Signs in user with valid credentials (mocked).
+*   ✅ `logInWithEmailAndPassword()`: Handles invalid credentials (mocked, checks for resulting credential state).
+*   ✅ `logInWithGoogle()`: Signs in with Google successfully (mocked).
+*   ✅ `logInWithGoogle()`: Throws exception when Google sign-in is cancelled (mocked).
+*   ✅ `logInWithGoogle()`: Handles Google sign-in cancellation and allows retry (mocked).
+*   ✅ `logOut()`: Signs out user from Firebase and Google (mocked, checks for user state).
+
+#### `chat_repository_test.dart`
+*   ✅ `sendMessage()`: Sends a message and updates the chat room successfully in Firestore (fake).
+*   ✅ `sendMessage()`: Handles multiple messages correctly, updating the chat room's last message.
+*   ✅ `createChatRoom()`: Creates a new chat room successfully in Firestore (fake).
+*   ✅ `createChatRoom()`: Creates a chat room with correct participant data derived from tutor/student IDs.
+*   ✅ `getChatRoom()`: Retrieves an existing chat room from Firestore (fake).
+*   ✅ `getChatRoom()`: Returns `null` when a chat room does not exist.
+*   ✅ `getChatRoom()`: Handles chat rooms with null optional fields correctly.
+*   ✅ `getMessages()`: Returns messages for a chat room, ordered by timestamp (fake).
+*   ✅ `getMessages()`: Returns an empty list when no messages exist in a chat room.
+*   ✅ `markMessagesAsRead()`: Marks messages as read for a specific user (messages not sent by the user) in Firestore (fake).
+*   ✅ `markMessagesAsRead()`: Handles an empty chat room gracefully without errors.
+
+#### `session_repository_test.dart`
+*   ✅ `getSessions()`: Returns an empty list (stream emission) when no sessions exist.
+*   ✅ `getSessions()`: Returns a list of sessions (stream emission) when sessions exist, mapping Firestore data correctly.
+*   ✅ `getSessions()`: Defaults to `SessionStatus.scheduled` if status is missing or invalid in Firestore data.
+*   ✅ `create()`: Creates a new session document in Firestore (fake) with correct data.
+
+#### `storage_repository_test.dart`
+*   ✅ `uploadFile()`: Returns an empty string when the provided `filePath` is empty.
+*   ✅ `uploadFile()`: Simulates file upload using mock storage and verifies a download URL is returned.
+*   ✅ `uploadFile()`: Correctly extracts the filename from a complex file path.
+*   ✅ `uploadFile()`: Creates the proper storage path structure (`users/<userId>/uploads/<filename>`) in mock storage.
+*   ✅ `uploadFile()`: Handles various simulated file types (pdf, jpg, mp4, mp3) with mock storage.
+*   ✅ `uploadFile()`: Handles filenames with special characters (mocked).
+*   ✅ `uploadFile()`: Handles filenames with multiple dots (mocked).
+*   ✅ `uploadFile()`: Handles an empty `userId` gracefully in mock storage operations.
+
+#### `student_repository_test.dart`
+*   ✅ `createStudent()`: Creates a student document in Firestore (fake) with all fields.
+*   ✅ `createStudent()`: Creates an empty student (using `Student.empty`) document correctly.
+*   ✅ `createStudent()`: Creates a student with multiple courses.
+*   ✅ `getStudent()`: Retrieves and returns an existing student document from Firestore (fake).
+*   ✅ `getStudent()`: Returns `null` when the student document does not exist.
+*   ✅ `getStudent()`: Handles and correctly parses a student document with minimal data (empty strings, default enums).
+*   ✅ `getStudent()`: Correctly parses student data with different grade levels.
+*   ✅ `getStudent()`: Correctly parses student data with graduate-level courses.
+
+#### `tutor_repository_test.dart`
+*   ✅ `createTutor()`: Creates a tutor document in Firestore (fake) with all fields, including courses and academic credentials.
+*   ✅ `createTutor()`: Creates an empty tutor (using `Tutor.empty`) document correctly.
+*   ✅ `getTutors()`: Returns an empty list when no tutors exist in Firestore (fake).
+*   ✅ `getTutors()`: Returns all tutors when multiple tutor documents exist.
+*   ✅ `getTutors()`: Parses tutors with complex data (multiple courses, multiple academic credentials) correctly.
+*   ✅ `getTutor()`: Retrieves and returns an existing tutor document from Firestore (fake).
+*   ✅ `getTutor()`: Returns `null` when the tutor document does not exist.
+*   ✅ `getTutor()`: Handles and correctly parses a tutor document with minimal data.
+
+#### `user_repository_test.dart`
+*   ✅ `createUser()`: Creates a user document in Firestore (fake) with basic fields.
+*   ✅ `createUser()`: Creates a user document with optional fields like `imageUrl`, `coverUrl`, `isAdmin`.
+*   ✅ `getUser()`: Retrieves and returns an existing user document from Firestore (fake).
+*   ✅ `getUser()`: Returns `User.empty` when the user document does not exist.
+*   ✅ `getUser()`: Handles and correctly parses user data that includes a `Schedule` object.
+*   ✅ `updateUser()`: Updates an existing user document in Firestore (fake) with new data.
+*   ✅ `updateUserRole()`: Updates only the `role` field of a user document.
+*   ✅ `updateAdminStatus()`: Updates only the `isAdmin` field of a user document.
+*   ✅ `deleteUser()`: Deletes a user document from Firestore (fake).
+*   ✅ `getUsers()`: Returns an empty list when no users exist in Firestore (fake).
+*   ✅ `getUsers()`: Returns all users when multiple user documents exist.
+

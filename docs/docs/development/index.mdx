@@ -1,0 +1,167 @@
+---
+sidebar_position: 0
+sidebar_label: Development Overview
+---
+
+# Development Overview
+This document details the software architecture strategy for TutorLM. Our approach is fundamentally geared towards creating a system that is modular, scalable, easily testable, and straightforward to maintain over time. To achieve these goals, we primarily employ a feature-first organizational structure, where the codebase is segmented by distinct application capabilities. This structure is further reinforced by principles inspired by Clean Architecture, which guide us in establishing a clear separation of concerns across different layers of the application.
+
+
+The architecture is built upon several core tenets:
+
+- **Modularity:** Features are developed as largely independent units.
+- **Separation of Concerns:** Clear boundaries between UI logic, core business rules, and data handling.
+- **Dependency Rule:** Dependencies point inwards—from Presentation to Domain, with Data serving Domain.
+- **Testability:** Each layer/component can be verified in isolation.
+- **Scalability & Maintainability:** New features integrate with minimal disruption; codebase remains organized and adaptable.
+
+---
+
+### Architectural Layers and Code Structure
+
+The application is conceptually divided into three primary layers:
+
+1. **Presentation (Application) Layer**
+2. **Domain Layer**
+3. **Data Layer**
+
+Physically, the codebase reflects this through feature-specific folders, a central `core` folder, and an `app` folder, each with a distinct role.
+
+---
+
+### Feature-Driven Development
+
+The cornerstone of our organizational strategy is a **feature-based approach**. Each significant capability (e.g., Authentication, Session Management, Chat, User Profile) is encapsulated within its own folder (e.g., `lib/auth/`, `lib/session/`).
+
+- **UI, state management, and feature logic are co-located.**
+- **Feature modules are highly independent,** depending mainly on the `core` folder (for shared business logic, domain models, repository interfaces) and occasionally the `app` folder (for global configs, routing, shared state).
+- **Direct dependencies between features are minimized,** promoting decoupling and isolation.
+
+---
+
+### The Presentation Layer
+
+Responsible for everything the user sees and interacts with:
+
+- **UI Components:** Widgets/Views in each feature folder (e.g., `lib/session/view/`, `lib/session/widgets/`).
+- **State Management:** Predominantly uses the Bloc library. Each feature has its own Blocs or Cubits (e.g., `lib/session/bloc/`).
+  - **Blocs:** For complex state with multiple events and transformations.
+  - **Cubits:** For simpler, lightweight state management.
+- **UI widgets listen to state changes** (using `BlocBuilder` or similar) and rebuild accordingly.
+- **User actions** are dispatched as events to Blocs or as method calls to Cubits.
+- **The `app` folder** (e.g., `lib/app/`):
+  - Manages global state (e.g., authentication status, theme, localization) via a global `AppBloc`.
+  - Handles root navigation setup and app lifecycle management.
+
+**Interaction Flow:**
+- UI reacts to Bloc/Cubit state changes.
+- User interactions are channeled to state management components.
+- Blocs/Cubits interact with repositories in the Domain Layer.
+
+---
+
+### The Domain Layer
+
+Encapsulated primarily within the `core` folder. This is the application's business logic and core data structures.
+
+- **Domain Models (Entities):** Plain Dart objects (e.g., `User`, `Session`, `Course` in `lib/core/models/`).
+- **Repository Interfaces:** Abstract contracts (e.g., `AuthenticationRepository`, `SessionRepository` in `lib/core/repositories/`).
+- **Use Cases:** (Optional) Encapsulate specific business logic/user stories.
+
+**Key Characteristics:**
+- **No Flutter-specific code.**
+- **No widgets or Flutter dependencies.**
+- **Platform-agnostic and highly testable.**
+
+---
+
+### The Data Layer
+
+Responsible for data retrieval, storage, and communication with external/local sources. Provides concrete implementations for repository interfaces.
+
+- **Repository Implementations:** In `lib/core/repositories/`, implement interfaces from the Domain Layer (e.g., `SessionRepositoryImpl`).
+- **Data Sources:**
+  - **External Services/SDKs:** Firebase Auth, Firestore, Storage, FCM, Google Sign-In, etc.
+  - **Local Data Sources:** (If needed) SQLite, shared preferences, etc.
+- **Data Transfer Objects (DTOs):** Used for mapping between external data and Domain Models.
+- **Data Transformation:** Converts raw data (e.g., Firestore docs, JSON) to Domain Models and vice versa.
+
+> **Note:** Even without a dedicated `data_sources` sub-folder, the Data Layer's responsibilities are fulfilled by repository implementations that interact with SDKs.
+
+---
+
+### Understanding Interaction and Data Flow
+
+The architecture promotes a clear, unidirectional flow of data and dependencies:
+
+1. **User Interaction** occurs in a UI widget.
+2. **Event/Action** is dispatched to a Bloc/Cubit.
+3. **Bloc/Cubit** communicates with a Repository Interface (Domain Layer).
+4. **Repository Interface** is routed to its Concrete Implementation (Data Layer) via Dependency Injection.
+5. **Repository Implementation** interacts with the Data Source (e.g., Firebase).
+6. **Data is Retrieved/Transformed** into Domain Models.
+7. **Domain Model(s) or error** are returned to the Bloc/Cubit.
+8. **Bloc/Cubit emits a New State.**
+9. **UI Widgets rebuild** to reflect the new state.
+
+---
+
+### Facilitating Inter-Feature Communication
+
+- **Surface-Level (Navigational):**
+  - Managed in `main.dart` or a router config file.
+  - Features navigate via named routes (e.g., `Navigator.pushNamed(context, '/featureB_view')`).
+  - Avoids direct import dependencies between feature UIs.
+- **Deeper (Data-Driven):**
+  - Mediated through shared repositories in the `core` folder.
+  - Repositories are provided high in the widget tree (e.g., with `RepositoryProvider`).
+  - Repositories may expose data as **Streams** (e.g., `Stream<List<Session>>`).
+  - Features subscribe to streams and react to updates, enabling a reactive, decoupled system.
+
+---
+
+### Managing Cross-Cutting Concerns
+
+- **Dependency Injection:**
+  - Uses `RepositoryProvider` and `BlocProvider` from `flutter_bloc` for dependency management and testability.
+- **Consistent Styling & Theming:**
+  - Centralized in `lib/core/style/` (e.g., `themes.dart`).
+- **Shared Widgets:**
+  - Common UI elements in `lib/core/widgets/`.
+- **Utilities & Formatters:**
+  - Helper functions in `lib/core/utils/`.
+- **Error Handling:**
+  - Repositories return results indicating success/failure (e.g., `Either`, custom `Result`, or typed exceptions).
+  - Blocs/Cubits translate errors into UI states (e.g., `ErrorState`).
+- **Application Configuration:**
+  - Centralized (e.g., `firebase_options.dart`, environment configs).
+
+---
+
+### Advantages of This Architectural Approach
+
+- **Modularity & Decoupling:** Features are well-isolated and easy to manage.
+- **Testability:**
+  - Blocs/Cubits can be unit-tested with mocked repositories.
+  - Domain logic is testable in isolation.
+  - Repository implementations can be tested with mocked data sources.
+  - Widget testing is simplified by providing mock Blocs/Cubits.
+- **Scalability:** New features or changes have localized impact.
+- **Maintainability:** Clear structure reduces cognitive load and risk of regressions.
+- **Parallel Development:** Teams can work on different features concurrently with minimal conflicts.
+
+---
+
+### Visualizing the High-Level Architecture of TutorLM
+
+![TutorLM Architecture](/../static/img/highlevel.svg)
+
+---
+
+### Potential Considerations and Trade-offs
+
+- **Initial Setup Complexity:**
+  - Higher than monolithic approaches; more boilerplate and a steeper learning curve.
+- **For Small/Simple Projects:**
+  - Strict layering may be overkill, but pays off as the app grows.
+---

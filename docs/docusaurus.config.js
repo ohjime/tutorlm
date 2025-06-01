@@ -42,8 +42,10 @@ const config = {
           showLastUpdateTime: true,
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-          
+          customCss: [
+            require.resolve('./src/css/custom.css'),
+            require.resolve('./src/css/mermaid-dark.css'),
+          ],
         },
       }),
     ],
@@ -66,7 +68,7 @@ const config = {
         },
       },
       navbar: {
-        title: 'TutorLM Docs',
+        title: 'TutorLM',
         logo: {
           alt: 'Logo',
           src: 'img/logo.png',
@@ -74,20 +76,20 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'guide/introduction',
+            docId: 'manual/start',
             position: 'left',
-            label: 'Getting Started',
-            
+            label: 'User Guide',
+            sidebar: null, // Hide sidebar for this doc
           },
           {
             type: 'doc',
-            docId: 'design/overview',
+            docId: 'design/index',
             position: 'right',
             label: 'Design',
           },
           {
             type: 'doc',
-            docId: 'development/overview',
+            docId: 'development/index',
             position: 'right',
             label: 'Development',
           },
